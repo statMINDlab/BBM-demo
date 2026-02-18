@@ -31,7 +31,8 @@ dir_data <- file.path(dir_project, "data")
 
 ## Bayesian Brain Mapping Overview
 
-This demo accompanies the manuscript "Bayesian brain mapping: population-informed individualized functional topography and connectivity" ([Da Silva Sanchez et al., 2025](https://doi.org/10.48550/arXiv.2602.01551)), which provides a comprehensive introduction to Bayesian Brain Mapping (BBM). Briefly, there are two steps to performing BBM, both implemented in the `BayesBrainMap` R package: *(1) prior estimation* and *(2) model fitting* (Figure \@ref(fig:model-overview)).
+This demo accompanies the manuscript "Bayesian brain mapping: population-informed individualized functional topography and connectivity" ([Da Silva Sanchez et al., 2026](https://arxiv.org/abs/2602.01551v1)), which provides a comprehensive introduction to Bayesian Brain Mapping (BBM).
+Briefly, there are two steps to performing BBM, both implemented in the `BayesBrainMap` R package: *(1) prior estimation* and *(2) model fitting* (Figure \@ref(fig:model-overview)).
 
 ```{r model-overview, echo=FALSE, out.width="100%", fig.align='center', fig.cap="Overview of Bayesian Brain Mapping."}
 knitr::include_graphics(file.path(dir_data, "inputs/Figure1.pdf"))
@@ -61,12 +62,12 @@ The resulting subject list (`valid_combined_subjects_balanced.rds`) is used thro
 
 ### Run `estimate_prior()`
 
-In this step, we estimate group-level statistical priors using the `estimate_prior()` function from the `BayesBrainMap` package. We must specify the training data, processing choices, and the template file.
+In this step, we estimate group-level statistical priors using the `estimate_prior()` function from the `BayesBrainMap` package.
+We must specify the training data, processing choices, and the template file.
 
 #### Training Data
 
 The final lists of subjects saved above (`valid_combined_subjects_balanced.rds`) includes individuals who passed motion filtering in both LR and RL directions for both sessions, were unrelated, and were sex-balanced within age groups.
-
 
 #### Preprocessing Parameters
 
@@ -76,7 +77,8 @@ Specifically:
 
 -   `drop_first = 15` removes the first 15 volumes from each scan to eliminate early signal instability and motion artifacts.
 
--   `scrub` defines volumes to censor and exclude after a target duration. We truncate data to the first 10 minutes (600 seconds), excluding any volumes beyond that point.
+-   `scrub` defines volumes to censor and exclude after a target duration.
+    We truncate data to the first 10 minutes (600 seconds), excluding any volumes beyond that point.
 
 -   `hpf = 0.01` applies a high-pass filter at 0.01 Hz to remove low-frequency drift from the signal.
 
@@ -84,14 +86,17 @@ See [Appendix C](#appendix-scrub) for more details.
 
 #### Template File
 
-Here we use the Yeo17 parcellation [@yeo2011organization] as the template. For details on how this parcellation was processed and simplified for use, see [Appendix D](#appendix-parcellations).
+Here we use the Yeo17 parcellation [@yeo2011organization] as the template.
+For details on how this parcellation was processed and simplified for use, see [Appendix D](#appendix-parcellations).
 
 #### Run `estimate_prior()`
 
-**Note:** The code below is provided for reference but is not evaluated in this demo. To run it yourself, you must have access to HCP data and update `dir_train` with the path to your HCP data directory. Pre-computed priors are available for download from OSF and are used in the model fitting section below.
+**Note:** The code below is provided for reference but is not evaluated in this demo.
+To run it yourself, you must have access to HCP data and update `dir_train` with the path to your HCP data directory.
+Pre-computed priors are available for download from OSF and are used in the model fitting section below.
 
-Running `estimate_prior()` on the full subject list (~350 subjects) takes approximately 27 hours and uses 135 GB of memory when run sequentially. With parallel processing enabled via `usePar`, runtime is significantly reduced.
-
+Running `estimate_prior()` on the full subject list (\~350 subjects) takes approximately 27 hours and uses 135 GB of memory when run sequentially.
+With parallel processing enabled via `usePar`, runtime is significantly reduced.
 
 ```{r warning=FALSE, eval=FALSE}
 
@@ -130,10 +135,10 @@ prior <- estimate_prior(
 saveRDS(prior, file.path(dir_prior, 'prior.rds'))
 ```
 
-
 ## Prior Visualization
 
-In this section, we visualize the Yeo 17 template and the pre-estimated prior maps (mean and variance). We also visualize the functional connectivity prior.
+In this section, we visualize the Yeo 17 template and the pre-estimated prior maps (mean and variance).
+We also visualize the functional connectivity prior.
 
 First, we load the pre-estimated prior that will be used for visualization and model fitting:
 
@@ -143,11 +148,14 @@ prior <- readRDS("priors/Yeo17/prior_combined_Yeo17_noGSR.rds")
 
 ### Priors for Spatial Engagement
 
-The Yeo17 parcellation divides the cortex into 17 functional networks. See [Appendix D](#appendix-parcellations) for details on how this parcellation was prepared. The `6_visualization_prior.R` script in `src/` loads each estimated prior file and plots both the mean and standard deviation.
+The Yeo17 parcellation divides the cortex into 17 functional networks.
+See [Appendix D](#appendix-parcellations) for details on how this parcellation was prepared.
+The `6_visualization_prior.R` script in `src/` loads each estimated prior file and plots both the mean and standard deviation.
 
 ### Priors for Functional Connectivity
 
-The functional connectivity (FC) prior captures the expected correlation structure between networks. The `src/` folder contains visualization scripts for FC priors using both Cholesky and Inverse-Wishart parameterizations.
+The functional connectivity (FC) prior captures the expected correlation structure between networks.
+The `src/` folder contains visualization scripts for FC priors using both Cholesky and Inverse-Wishart parameterizations.
 
 This step visualizes the Functional Connectivity (FC) prior for each prior using both the Cholesky and Inverse-Wishart parameterizations.
 For each group-level prior in `priors/`, we compute and plot:
@@ -192,7 +200,6 @@ These visualizations allow for a direct comparison of spatial FC structure and u
 
 The figures below show the mean and standard deviation of FC priors for each parcellation (GICA15, GICA25, GICA50, Yeo17) using Cholesky and Inverse-Wishart methods.
 Only combined priors are shown.
-
 
 ## Using Priors for Individual-Level Brain Mapping
 
