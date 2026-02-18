@@ -214,48 +214,27 @@ The functional connectivity (FC) prior captures the expected correlation structu
 The `src/` folder contains visualization scripts for FC priors using both Cholesky and Inverse-Wishart parameterizations.
 
 This step visualizes the Functional Connectivity (FC) prior using both the Cholesky and Inverse-Wishart parameterizations.
-For each group-level prior in `priors/`, we compute and plot:
+For the group-level prior, we compute and plot:
 
 -   Mean FC matrix (off-diagonal values only)
 
 -   Standard deviation of FC estimates (from the variance matrix)
 
-For each prior, the following outputs are saved in the corresponding folder under:
-
-`data/outputs/priors_plots/<parcellation>/<encoding>/FC/`
-
-Where:
-
--   `parcellation` = GICA15, GICA25, GICA50, or Yeo17
-
--   `encoding` = LR, RL, or combined
-
-#### PDF files (2 per prior)
-
--   `[prior_name]_FC_Cholesky.pdf`
-
--   `[prior_name]_FC_InverseWishart.pdf`
-
-Each PDF includes:
-
--   FC Prior Mean (Page 1)
-
--   FC Prior Standard Deviation (Page 2)
+The plots are saved in: `data/outputs/priors_plots/Yeo17/combined/noGSR/FC/`
 
 #### PNG imgaes (4 per prior)
 
--   `[prior_name]_FC_Cholesky_mean.png`
+-   `Yeo17_FC_Cholesky_mean.png`
 
--   `[prior_name]_FC_Cholesky_sd.png`
+-   `Yeo17_FC_Cholesky_sd.png`
 
--   `[prior_name]_FC_InverseWishart_mean.png`
+-   `Yeo17_FC_InverseWishart_mean.png`
 
--   `[prior_name]_FC_InverseWishart_sd.png`
+-   `Yeo17_FC_InverseWishart_sd.png`
 
 These visualizations allow for a direct comparison of spatial FC structure and uncertainty across priors and estimation methods.
 
 The figures below show the mean and standard deviation of FC priors using Cholesky and Inverse-Wishart methods.
-Only combined priors are shown.
 
 ```{r model-overview, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/FC/prior_combined_Yeo17_noGSR_FC_Cholesky_mean.png"))
