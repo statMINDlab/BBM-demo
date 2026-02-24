@@ -26,13 +26,18 @@ wb_path <- "~/Downloads/workbench"
 ciftiTools.setOption("wb_path", wb_path) 
 # Set up paths
 #dir_HCP <- "/N/project/hcp_dcwan" # Location of HCP data
-dir_HCP <- "~/Documents/hcp_dcwan"
+#dir_HCP <- "~/Documents/hcp_dcwan"
+#########################################################################
+#
+# INSERT YOUR OWN PATH TO THE HCP DATASET IN THE LINE BELOW TO RUN PIPELINE
+#
+#########################################################################
+# Bring your own HCP access for both restricted and unrestricted data
+dir_HCP_demo <- "~/Documents/GitHub/BayesianBrainMapping-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
+
 dir_project <- "~/Documents/GitHub/BayesianBrainMapping-priors" # Path to GitHub folder
 
 dir_data <- file.path(dir_project, "data_OSF") # Path to data folder
-
-# Bring your own HCP access for both restricted and unrestricted data
-dir_HCP_demo <- "~/Documents/GitHub/BayesianBrainMapping-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
 
 # HCP_unrestricted_fname <- file.path(dir_data, "inputs", "unrestricted_HCP_demographics.csv")
 HCP_restricted_fname <- file.path(dir_HCP_demo, "restricted_HCP.csv")
@@ -59,7 +64,7 @@ nThreads = 46 # number of threads to use to estimate priors
 
 # Parameter sweep definition for prior estimation
 encoding_sweep = c("combined") # Using only combined c("LR", "RL", "combined") 
-nIC_sweep = c(1)
+nIC_sweep = c(0, 1, 2, 15, 25) # Yeo, MSC, PROFUMO, GICA 15, GICA 25
 GSR_sweep = c(FALSE, TRUE)
 
 # Parameter definition for fit BBM

@@ -115,6 +115,9 @@ v <- c(
 )
 parcel_ids  <- 1:17
 one_hot <- matrix(0, nrow = length(v), ncol = length(parcel_ids))
+
+one_hot = one_hot[, order[[name]]$ic_order]
+
 for (i in seq_along(parcel_ids)) {
   one_hot[, i] <- as.integer(v == parcel_ids[i])
 }
@@ -122,6 +125,7 @@ mat <- dice_overlap(X=one_hot)
 tab  <- parcellation$meta$cifti$labels$`Column number`
 labs <- rownames(tab)[tab$Key > 0]
 labs <- labs[order[[name]]$ic_order]
+
 p <- plot_FC_gg(
   mat,
   labs      = labs,
@@ -137,7 +141,7 @@ p <- plot_FC_gg(
     legend.position="none"
   ) + scale_fill_gradientn(colours = viridisLite::mako(256, direction = -1))
 
-# ggplot2::ggsave(file.path(dir_data, "outputs", "dice_overlap", "MSC_parcellation_overlap.png"), plot = p, bg = "white", width=6, height=6) 
+ ggplot2::ggsave(file.path(dir_data, "outputs", "dice_overlap", "MSC_parcellation_overlap.png"), plot = p, bg = "white", width=6, height=6) 
 
 # p_fixed <- set_panel_size(p, width = grid::unit(4, "in"), height = grid::unit(4, "in"))
 # ggplot2::ggsave(
@@ -154,13 +158,13 @@ p <- p + coord_fixed() +
     legend.position = "none"
   )
 
-# fixed_size_plot <- egg::set_panel_size(
-#   p = p,
-#   width  = grid::unit(12, "cm"),
-#   height = grid::unit(12, "cm")
-# )
+fixed_size_plot <- egg::set_panel_size(
+  p = p,
+  width  = grid::unit(12, "cm"),
+  height = grid::unit(12, "cm")
+)
 
-# gridExtra::grid.arrange(fixed_size_plot)
+gridExtra::grid.arrange(fixed_size_plot)
 
 ggplot2::ggsave(
   filename = file.path(dir_data, "outputs", "dice_overlap", "MSC_parcellation_overlap.png"),
@@ -181,6 +185,9 @@ v <- rbind(
 sd <- apply(v, 2, sd, na.rm = TRUE)
 sd_mat  <- matrix(2 * sd, nrow(v), ncol(v), byrow = TRUE)
 one_hot <- ifelse(abs(v) >= sd_mat, 1L, 0L)
+
+one_hot = one_hot[, order[[name]]$ic_order]
+
 mat <- dice_overlap(X=one_hot)
 labs <- paste0("Network ", 1:12)
 labs <- labs[order[[name]]$ic_order]
@@ -248,6 +255,7 @@ v <- rbind(
 sd <- apply(v, 2, sd, na.rm = TRUE)
 sd_mat  <- matrix(2 * sd, nrow(v), ncol(v), byrow = TRUE)
 one_hot <- ifelse(abs(v) >= sd_mat, 1L, 0L)
+one_hot = one_hot[, order[[name]]$ic_order]
 mat <- dice_overlap(X=one_hot)
 labs <- paste0("IC", 1:15)
 labs <- labs[order[[name]]$ic_order]
@@ -462,6 +470,8 @@ sd_mat  <- matrix(2 * sd, nrow(mean), ncol(mean), byrow = TRUE)
 mask <- abs(mean) >= sd_mat
 ones <- matrix(1L, nrow(mean), ncol(mean))
 one_hot <- ones * mask
+one_hot = one_hot[, order[[name]]$ic_order]
+
 mat <- dice_overlap(X=one_hot)
 labs <- rownames(prior$template_parc_table)[prior$template_parc_table$Key > 0]
 labs <- labs[order[[name]]$ic_order]
@@ -530,6 +540,7 @@ sd_mat  <- matrix(2 * sd, nrow(mean), ncol(mean), byrow = TRUE)
 mask <- abs(mean) >= sd_mat
 ones <- matrix(1L, nrow(mean), ncol(mean))
 one_hot <- ones * mask
+one_hot = one_hot[, order[[name]]$ic_order]
 mat <- dice_overlap(X=one_hot)
 labs <- paste0("Network ", 1:ncol(prior$prior$mean))
 labs <- labs[order[[name]]$ic_order]
@@ -586,9 +597,7 @@ ggplot2::ggsave(
 )
 
 
-
-
-# GICA15
+# GICA15 
 prior <- readRDS(file.path(dir_project, "priors", "GICA15", "prior_combined_GICA15_noGSR.rds"))
 name = "GICA15"
 mean <- prior$prior$mean
@@ -597,6 +606,7 @@ sd_mat  <- matrix(2 * sd, nrow(mean), ncol(mean), byrow = TRUE)
 mask <- abs(mean) >= sd_mat
 ones <- matrix(1L, nrow(mean), ncol(mean))
 one_hot <- ones * mask
+one_hot = one_hot[, order[[name]]$ic_order]
 mat <- dice_overlap(X=one_hot)
 labs <- paste0("IC", 1:15)
 labs <- labs[order[[name]]$ic_order]

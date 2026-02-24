@@ -23,12 +23,17 @@ It accompanies the manuscript **Bayesian brain mapping: population-informed indi
 ## Running the Analysis
 
 **Full pipeline:**
+
+To run the full pipeline, including prior estimation, you will need access to the HCP.
+
 ```r
-# Edit paths in src/0_setup.R first, then:
+# BEFORE RUNNING: you will need to bring your own HCP access
+# Modify dir_hcp path in src/0_setup.R
+# If necessary, edit other paths in src/0_setup.R first, then:
 source("src/00_main.R")
 ```
 
-All necessary inputs are available in the Open Science Foundation [repository](https://osf.io/k6vx8). To run the pipeline,`data_OSF` is expected in the root directory. All raw outputs will be written within the `outputs` subfolder.
+To reproduce all results after prior estimations, all necessary inputs are publicly available in the Open Science Foundation [repository](https://osf.io/k6vx8). To run the pipeline,`data_OSF` is expected in the root directory. All raw outputs will be written within the `outputs` subfolder.
 
 **Demo only:**
 
