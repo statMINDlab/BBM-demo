@@ -9,6 +9,7 @@
 # devtools::install_github("mandymejia/fMRItools", "7.0", force=TRUE)
 # install.packages("viridis")
 # install.packages("BayesBrainMap")
+# install.packages("doParallel")
 # devtools::install_github("diegoderman/BayesBrainMap", ref = "2.0")
 
 # Load packages
@@ -24,6 +25,7 @@ library(purrr)           # version: 0.2.0
 # Set CIFTI Workbench path
 wb_path <- "~/Downloads/workbench"
 ciftiTools.setOption("wb_path", wb_path) 
+
 # Set up paths
 #dir_HCP <- "/N/project/hcp_dcwan" # Location of HCP data
 #dir_HCP <- "~/Documents/hcp_dcwan"

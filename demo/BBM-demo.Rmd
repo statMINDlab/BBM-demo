@@ -51,8 +51,9 @@ git clone https://github.com/mandymejia/BBM-priors.git
 cd BBM-priors/
 ```
 
-This repository contains the priors for the Yeo17 parcellation.
-If you wish to use other parcellations (GICA, MSC, PROFUMO) they can be downloaded from [OSF](https://osf.io/k6vx8/files/osfstorage).
+This GitHub repository contains the priors for the Yeo17 parcellation.
+If you wish to use another parcellation (i.e., GICA, MSC, PROFUMO) they can be downloaded from [OSF](https://osf.io/k6vx8/files/osfstorage).
+Once you have downloaded additional priors from OSF, they should be moved into the `priors/` folder to match the structure shown below.
 
 The folder structure should look like this:
 
@@ -79,7 +80,7 @@ This section initializes the environment by loading required packages, setting a
 
 -   `dir_project` (path to the GitHub folder)
 
--   `dir_HCP` (path to the HCP data)
+-   `dir_train` (path to the HCP data)
 
 -   `HCP_unrestricted_fname` (path to the unrestricted HCP CSV if you have access to it)
 
@@ -194,7 +195,7 @@ We also visualize the functional connectivity prior.
 First, we load the pre-estimated prior that will be used for visualization and model fitting:
 
 ```{r load-prior, eval=FALSE}
-prior <- readRDS("priors/Yeo17/prior_combined_Yeo17_noGSR.rds")
+prior <- readRDS(file.path(dir_data, "priors/Yeo17/prior_combined_Yeo17_noGSR.rds"))
 ```
 
 ### Priors for Spatial Engagement
@@ -202,6 +203,26 @@ prior <- readRDS("priors/Yeo17/prior_combined_Yeo17_noGSR.rds")
 The Yeo17 parcellation divides the cortex into 17 functional networks.
 See [Appendix C](#appendix-parcellations) for details on how this parcellation was prepared.
 The `6_visualization_prior.R` script in `src/` loads each estimated prior file and plots both the mean and standard deviation.
+
+```{r plot-prior, eval=FALSE}
+    # Plot mean
+    plot(
+      prior,
+      stat = "mean",
+      fname = file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/prior_combined_Yeo17_noGSR_DefaultA.png"),
+      idx = 14,
+      title = "Yeo17 Network DefaultA (#14) (mean)"
+    )
+
+    # Plot standard deviation
+    plot(
+      prior,
+      stat = "sd",
+      fname = file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/prior_combined_Yeo17_noGSR_DefaultA.png"),
+      idx = 14,
+      title = "Yeo17 Network DefaultA (#14) (sqrt varNN)"
+    )
+```
 
 ```{r model-overview, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/prior_combined_Yeo17_noGSR_DefaultA_mean.png"))
@@ -267,7 +288,7 @@ This example uses:
 prior <- readRDS(file.path(dir_data, "priors/Yeo17/prior_combined_Yeo17_noGSR.rds"))
 
 # Load subject fMRI data (CIFTI format)
-BOLD_1 <- c(file.path(dir_data, "inputs", 
+BOLD_1 <- c(file.path(dir_train, 
                     "rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.nii"))
 
 ```
@@ -281,11 +302,12 @@ We do this twice: once with a single session and once with all four sessions.
 For each we plot both the mean and standard error.
 
 ```{r warning=FALSE, eval=FALSE}
-bMap_1 <- BrainMap(
+bMap_1 <- fit_BBM(
   BOLD = BOLD_1,
   prior = prior,
   TR = 0.72,
-  drop_first = 15
+  drop_first = 15,
+  GSR = FALSE 
   )
 ```
 
