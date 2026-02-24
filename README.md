@@ -28,6 +28,8 @@ It accompanies the manuscript **Bayesian brain mapping: population-informed indi
 source("src/00_main.R")
 ```
 
+All necessary inputs are available in the Open Science Foundation [repository](https://osf.io/k6vx8). To run the pipeline,`data_OSF` is expected in the root directory. All raw outputs will be written within the `outputs` subfolder.
+
 **Demo only:**
 
 ```bash
