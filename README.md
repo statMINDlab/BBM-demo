@@ -27,9 +27,7 @@ It accompanies the manuscript **Bayesian brain mapping: population-informed indi
 To run the full pipeline, including prior estimation, you will need access to the HCP.
 
 ```r
-# BEFORE RUNNING: you will need to bring your own HCP access
-# Modify dir_hcp path in src/0_setup.R
-# If necessary, edit other paths in src/0_setup.R first, then:
+# BEFORE RUNNING: you will need to bring your own HCP access, modify dir_hcp path in src/0_setup.R accordingly.
 source("src/00_main.R")
 ```
 
