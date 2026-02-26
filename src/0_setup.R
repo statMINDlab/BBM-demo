@@ -33,14 +33,14 @@ ciftiTools.setOption("wb_path", wb_path)
 #
 #########################################################################
 # Bring your own HCP access for both restricted and unrestricted data
-dir_HCP_demo <- "~/Documents/GitHub/BayesianBrainMapping-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
+dir_HCP <- "~/Documents/GitHub/BayesianBrainMapping-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
 
 dir_project <- "~/Documents/GitHub/BayesianBrainMapping-priors" # Path to GitHub folder
 
 dir_data <- file.path(dir_project, "data_OSF") # Path to data folder
 
 # HCP_unrestricted_fname <- file.path(dir_data, "inputs", "unrestricted_HCP_demographics.csv")
-HCP_restricted_fname <- file.path(dir_HCP_demo, "restricted_HCP.csv")
+HCP_restricted_fname <- file.path(dir_HCP, "restricted_HCP.csv")
 # TEST PURPOSES ONLY TRYING WITH RESTRICTED DEMEOGRAPHICS
 HCP_unrestricted_fname <- file.path(dir_data, "inputs", "restricted_HCP_demographics.csv")
 
