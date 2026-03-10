@@ -52,11 +52,11 @@ The demo uses two main functions from `BayesBrainMap`:
    - Requires BOLD fMRI paths, template parcellation, and preprocessing parameters
    - Resource-intensive (~27 hours, 135GB memory for ~350 subjects)
 
-2. **`BrainMap()`** - Fits subject-level model using pre-estimated priors
+2. **`fit_BBM()`** - Fits subject-level model using pre-estimated priors
    - Input: BOLD data paths and prior object
    - Output: Individualized functional network maps
 
-3. **`engagements()`** - Identifies regions of significant deviation from prior mean
+3. **`id_engagements()`** - Identifies regions of significant deviation from prior mean
 
 ## Data Requirements
 
