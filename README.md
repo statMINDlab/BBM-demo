@@ -1,4 +1,4 @@
-# BayesianBrainMapping-priors
+# BBM-priors
 
 This repository holds population-derived priors/templates for Bayesian Brain Mapping (BBM), also known as template ICA. 
 
@@ -24,7 +24,7 @@ It accompanies the manuscript **Bayesian brain mapping: population-informed indi
 
 **Full pipeline:**
 
-To run the full pipeline, including prior estimation, you will need access to the HCP and the publicly available `data_OSF` directory containing the templates. You can download the latter from the Open Science Foundation [repository](https://osf.io/k6vx8). 
+To run the full pipeline, including prior estimation, you will need access to the HCP and the publicly available `data_OSF` directory containing the templates. You can download the latter from the Open Science Foundation [repository](https://osf.io/k6vx8/files/osfstorage). 
 
 ```r
 # BEFORE RUNNING: you will need to bring your own HCP access, modify dir_hcp path in src/0_setup.R accordingly.
