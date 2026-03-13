@@ -20,10 +20,14 @@ knitr::opts_chunk$set(echo = TRUE, fig.pos = "H")
 library(kableExtra)
 library(magrittr)
 library(knitr)
+library(BayesBrainMap)
+library(ciftiTools)
+wb_path <- "C:/Users/diego/Downloads/workbench-windows64-v2.1.0/workbench/bin_windows64"
+ciftiTools.setOption("wb_path", wb_path)
 ```
 
 ```{r setup-env, include=FALSE}
-dir_project <- "~/Documents/Github/BBM-priors" # Path to GitHub folder
+dir_project <- file.path(getwd(), "..") # Path to GitHub folder
 dir_data <- file.path(dir_project, "data")
 # dir_train <- "/path/to/training/BOLD/data"
 # dir_prior <- "/path/where/to/output/prior"
@@ -195,10 +199,6 @@ We also visualize the functional connectivity prior.
 First, we load the pre-estimated prior that will be used for visualization and model fitting:
 
 ```{r load-prior, eval=FALSE}
-
-# define dir_data
-dir_data <- file.path(github_repo_dir, "data")
-
 prior <- readRDS(file.path(dir_data, "priors/Yeo17/prior_combined_Yeo17_noGSR.rds"))
 ```
 
@@ -228,7 +228,7 @@ The `6_visualization_prior.R` script in `src/` loads each estimated prior file a
     )
 ```
 
-```{r model-overview, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
+```{r model-overview2, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/prior_combined_Yeo17_noGSR_DefaultA_mean.png"))
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/prior_combined_Yeo17_noGSR_DefaultA_sd.png"))
 ```
@@ -261,7 +261,7 @@ These visualizations allow for a direct comparison of spatial FC structure and u
 
 The figures below show the mean and standard deviation of FC priors using Cholesky and Inverse-Wishart methods.
 
-```{r model-overview, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
+```{r model-overview3, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/FC/prior_combined_Yeo17_noGSR_FC_Cholesky_mean.png"))
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/FC/prior_combined_Yeo17_noGSR_FC_Cholesky_sd.png"))
 knitr::include_graphics(file.path(dir_data, "outputs/priors_plots/Yeo17/combined/noGSR/FC/prior_combined_Yeo17_noGSR_FC_IW_mean.png"))
@@ -290,10 +290,12 @@ This example uses:
 ```{r warning=FALSE, eval=FALSE}
 # Load population prior 
 prior <- readRDS(file.path(dir_data, "priors/Yeo17/prior_combined_Yeo17_noGSR.rds"))
-dir_train <- "/Users/saigerutherford/Downloads/osfstorage-archive 3/data_OSF/inputs/"
+hcp_subject <- "101006"
+session <- "rfMRI_REST1_LR"
+dir_train <- "/LOCAL/HCP_DIR" # replace with your local HCP directory
 # Load subject fMRI data (CIFTI format)
-BOLD_1 <- c(file.path(dir_train, 
-                    "rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.nii"))
+BOLD_1 <- c(file.path(dir_train, hcp_subject, "MINonLinear/Results", session,
+                    paste0(session, "_Atlas_MSMAll_hp2000_clean.dtseries.nii")))
 
 ```
 
