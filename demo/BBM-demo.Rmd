@@ -201,7 +201,7 @@ First, we load the pre-estimated prior that will be used for visualization and m
 This file is included in the repository under `data/priors/Yeo17/` and can be loaded directly — no need to re-run `estimate_prior()`:
 
 ```{r load-prior, eval=TRUE}
-prior <- readRDS(file.path(dir_data, "priors/Yeo17/prior_combined_Yeo17_noGSR.rds"))
+prior <- readRDS(file.path(dir_data, "priors/Yeo17/noGSR/prior_combined_Yeo17_noGSR.rds"))
 ```
 
 ### Priors for Spatial Engagement
