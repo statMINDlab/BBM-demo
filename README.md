@@ -28,6 +28,28 @@ See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM
 
 ## Running the Analysis
 
+To make the package more approachable, we provide different wyas of approaching this repository, based on the level of depth and customabilization you need.
+
+**View Demo:**
+
+Just see the rendered Demo [here](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/BBM-demo.html).
+
+**Reproduce Demo analsysis:**
+
+The demo can be fully reproduced without having to estimate population priors and changed. To accomplish this, Yeo17 priors and subject-level results for a single HCP subject are programmaticaly downloaded from OSF using the `osfr` R package.
+
+```r
+# Install osfr library
+install.packages("osfr")
+```
+
+```r
+# Render the demo
+rmarkdown::render("demo/BBM-demo.Rmd")
+```
+
+Additionally, the corresponding snippets need to be evaluated. This can be achieved by toggling `eval=TRUE` in lines 207 and 347. 
+
 **Full pipeline:**
 
 To run the full pipeline, including prior estimation, you will need access to the HCP and the templates available in `data/templates`. Alternative, you can download and see the pre-estimated priors from the Open Science Foundation [repository](https://osf.io/k6vx8/files/osfstorage). 
@@ -38,28 +60,6 @@ source("src/00_main.R")
 ```
 
 Without HCP access, you can still obtain the estimated priors and reproduce most article results. Estimated templates are publicly available in `data_OSF`. To run the pipeline,`data_OSF` is expected in the root directory. All raw outputs will be written within the `outputs` subfolder.
-
-**Demo only:**
-
-```bash
-git clone git@github.com:mandymejia/BBM-priors.git 
-```
-
-```r
-# Render the demo
-rmarkdown::render("demo/BBM-demo.Rmd")
-```
-
-**Reproduce Demo analsysis:**
-
-The demo can be fully reproduced without having to estimate population priors. To accomplish this, Yeo17 priors and subject-level results for a single HCP subject need to be downloaded from OSF. The R package `osfr` is needed to fetch the files.
-
-```r
-# Install osfr library
-install.packages("osfr")
-```
-
-Additionally, the corresponding snippets need to be evaluated. This can be achieved by toggling `eval=TRUE` in lines 207 and 347. 
 
 ## BayesBrainMap Package Usage
 
