@@ -1,6 +1,5 @@
 ---
-title: "Individualized functional topographic mapping with the BayesBrainMap R package
-  and population-derived priors"
+title: "`BayesBrainMap` demo: population-derived priors"
 author: "Nohelia Da Silva Sanchez, Diego Derman, Saige Rutherford, Damon D. Pham, Ellyn Butler, Mary Beth Nebel, Amanda F. Mejia"
 output:
   bookdown::html_document2:
