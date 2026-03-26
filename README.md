@@ -5,6 +5,8 @@ This repository holds population-derived priors/templates for Bayesian Brain Map
 It accompanies the manuscript **Bayesian brain mapping: population-informed individualized functional topography and connectivity**. Nohelia Da Silva Sanchez, Diego Derman, Saige Rutherford, Damon D. Pham, Ellyn R. Butler, Mary Beth Nebel, Amanda F. Mejia
 [arXiv preprint](https://doi.org/10.48550/arXiv.2602.01551)
 
+Population-derived priors and supporting data used in this study are publicly available through the Open Science Framework (OSF): https://osf.io/k6vx8/files/osfstorage
+
 ## Vignette/Demo
 
 See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/BBM-demo.html) to view the demo.
