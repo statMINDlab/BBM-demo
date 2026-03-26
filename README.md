@@ -50,6 +50,17 @@ git clone git@github.com:mandymejia/BBM-priors.git
 rmarkdown::render("demo/BBM-demo.Rmd")
 ```
 
+**Reproduce Demo analsysis:**
+
+The demo can be fully reproduced without having to estimate population priors. To accomplish this, Yeo17 priors and subject-level results for a single HCP subject need to be downloaded from OSF. The R package `osfr` is needed to fetch the files.
+
+```r
+# Install osfr library
+install.packages("osfr")
+```
+
+Additionally, the corresponding snippets need to be evaluated. This can be achieved by toggling `eval=TRUE` in lines 207 and 347. 
+
 ## BayesBrainMap Package Usage
 
 The demo uses two main functions from `BayesBrainMap`:
