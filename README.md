@@ -9,7 +9,10 @@ Population-derived priors and supporting data used in this study are publicly av
 
 ## Vignette/Demo
 
-See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/BBM-demo.html) to view the demo.
+See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step1.html) to view the step 1 demo, corresponding to prior estimation.
+
+See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step2.html) to view the step 2 demo, corresponding to model fitting to subject-level data.
+
 
 ## Key Dependencies
 
@@ -23,12 +26,13 @@ See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM
 - `src/0_setup.R` - Configuration: package loading, paths, and analysis parameters
 - `src/1_fd_time_filtering.R` through `src/6_visualization_prior.R` - Pipeline scripts (run in order)
 - `src/manuscript/` - Figure generation scripts for the paper
-- `demo/BBM-demo.Rmd` - Tutorial/demo showcasing the BBM workflow
+- `demo/demo_step1.Rmd` - Tutorial/demo showcasing `estimate_prior()` workflow
+- `demo/BBM_step2.Rmd` - Tutorial/demo the `fit_BBM()` workflow to fit subject-level data
 - `data/` - Directory for input/output data 
 
 ## Running the Analysis
 
-To make the package more approachable, we provide different wyas of approaching this repository, based on the level of depth and customabilization you need.
+To make the package more approachable, we provide different ways of approaching this repository, based on the level of depth and customabilization you need.
 
 **View Demo:**
 
