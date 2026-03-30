@@ -40,7 +40,8 @@ dir_manuscript <- file.path(dir_project, "manuscript")
 This demo accompanies the manuscript "Bayesian brain mapping: population-informed individualized functional topography and connectivity" ([Da Silva Sanchez et al., 2026](https://arxiv.org/abs/2602.01551v1)), which provides a comprehensive introduction to Bayesian Brain Mapping (BBM).
 Briefly, there are two steps to performing BBM, both implemented in the `BayesBrainMap` R package: *(1) prior estimation* and *(2) model fitting*.
 
-In this demo we will walk through the code for both steps.
+In this demo we will walk through the code for the first step. If you aim to download a pre-calculated prior based on the HCP population, or already estimated your own prior, you can skip to `demo_step2` to see how to fit the model and estimate subject-level brain maps.
+
 The code shown within this demo is intended for learning purposes, and is not intended to be run within this demo due to computational resources and data availability (we cannot share the HCP data ourselves).
 However, we do provide instructions for running all steps yourself and the goal is to teach you how to do so.
 
