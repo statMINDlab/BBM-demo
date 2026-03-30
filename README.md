@@ -9,9 +9,9 @@ Population-derived priors and supporting data used in this study are publicly av
 
 ## Vignette/Demo
 
-See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step1.html) to view the step 1 demo, corresponding to prior estimation.
+- Step 1: **Population priors** See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step1.html) to view the "step 1 demo", corresponding to prior estimation.
 
-See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step2.html) to view the step 2 demo, corresponding to model fitting to subject-level data.
+- Step 2: **Subject-level BBM fit** See [this link](https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step2.html) to view the step 2 demo, corresponding to model fitting to subject-level data.
 
 
 ## Key Dependencies
