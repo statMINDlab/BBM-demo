@@ -55,7 +55,7 @@ To run the full pipeline, including prior estimation, you will need access to th
 source("src/00_main.R")
 ```
 
-Without HCP access, you can still obtain the estimated priors and reproduce most article results. Estimated templates are publicly available in `data_OSF`. To run the pipeline,`data_OSF` is expected in the root directory. All raw outputs will be written within the `outputs` subfolder.
+Without HCP access, you can still obtain the estimated priors and reproduce most article results. Estimated templates are publicly available in `data_OSF`. To run the pipeline, the relevant `data_OSF` material will be downloaded to the `data` folder. All raw outputs will be written within the `data` folder.
 
 # General BayesBrainMap Package Usage
 
