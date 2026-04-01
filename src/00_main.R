@@ -4,29 +4,26 @@
 Sys.setenv(R_LIBS_USER='$R_LIBS_USER')
 ###############################################################
 #
-# SET THE LOCATION OF THE SCRIPT FILES
+# CHECK DIRECTORY PATHS IN setup.R BEFORE RUNNING THIS SCRIPT
 #
 ###############################################################
 sourcedir = file.path(dir_project, "src")
 #sourcedir = "src"
 
 # Setup up dependencies and parameters
-source(file.path(sourcedir, "0_setup.R"))
+source(file.path(sourcedir, "00_setup.R"))
 
 # Run framewise displacement filtering 
-source(file.path(sourcedir, "1_fd_time_filtering.R"))
+source(file.path(sourcedir, "01_fd_time_filtering.R"))
 
 # Filter unrelated subjects
-source(file.path(sourcedir, "2_unrelated_filtering.R"))
+source(file.path(sourcedir, "02_unrelated_filtering.R"))
 
 # Balance sex within age groups
-source(file.path(sourcedir, "3_balance_age_sex.R"))
-
-# Prepare Yeo17 parcellation for Prior estimation
-source(file.path(sourcedir, "4_parcellations.R"))
+source(file.path(sourcedir, "03_balance_age_sex.R"))
 
 ######## Begin estimate priors over the parameter sweep defined in 0_setup.R ######
-source(file.path(sourcedir,"5_estimate_prior.R"))
+source(file.path(sourcedir,"04_estimate_prior.R"))
 
 # Intialize performance summary
 performance_tbl <- tibble(
@@ -74,21 +71,20 @@ saveRDS(performance_tbl, file.path(dir_data, "outputs", "prior_estimation_timing
 
 ##### Begin presenting prior results ######
 # visualize prior maps
-source(file.path(sourcedir,"6_visualization_prior.R"))
+source(file.path(sourcedir,"05_visualization_prior.R"))
 
 # find best match IC to order FC matrices
-source(file.path(sourcedir,"7_best_match_IC.R"))
+source(file.path(sourcedir,"06_best_match_IC.R"))
 
 # visualize FC matrices
-source(file.path(sourcedir,"8_visualization_FC.R"))
+source(file.path(sourcedir,"07_visualization_FC.R"))
 
 # visualize matrices of IC overlap
-source(file.path(sourcedir,"9_dice_overlap.R"))
+source(file.path(sourcedir,"08_dice_overlap.R"))
 
 ##### Begin brain mapping of single HCP subject with Yeo17 priors ########
-
-source(file.path(sourcedir, "manuscript/manuscript_brainmap.R"))
+source(file.path(sourcedir, "09_fit_BBM.R"))
 # make visualization of posterior FC estimate maps
-source(file.path(sourcedir, "manuscript/manuscript_brainmap_visualization.R"))
+source(file.path(sourcedir, "10_BBM_visualization.R"))
 
 

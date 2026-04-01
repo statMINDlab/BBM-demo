@@ -24,6 +24,10 @@ library(purrr)           # version: 0.2.0
 
 # Set CIFTI Workbench path
 wb_path <- "/Applications/wb_view.app/Contents/usr/bin"
+# Check if the path exists, otherwise throw an error
+if (!file.exists(wb_path)) {
+  stop(paste("Workbench path does not exist:", wb_path))
+}
 ciftiTools.setOption("wb_path", wb_path) 
 
 # Set up paths
@@ -33,19 +37,17 @@ ciftiTools.setOption("wb_path", wb_path)
 #
 #########################################################################
 # Bring your own HCP access for both restricted and unrestricted data
-dir_HCP <- "~/Documents/GitHub/BBM-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
-
 dir_project <- "~/Documents/GitHub/BBM-priors" # Path to GitHub folder
 
-dir_data <- file.path(dir_project, "data_OSF") # Path to data folder
+dir_data <- file.path(dir_project, "data") # Path to data folder
 
 # Bring your own HCP access for both restricted and unrestricted data
-dir_HCP_demo <- "~/Documents/GitHub/BBM-priors/data_OSF/inputs/HCP_demo" # Path to folder with HCP demographics CSVs
+dir_HCP <- "~/Documents/GitHub/BBM-priors/data/HCP_demo" # Path to folder with HCP demographics CSVs
 
 # HCP_unrestricted_fname <- file.path(dir_data, "inputs", "unrestricted_HCP_demographics.csv")
 HCP_restricted_fname <- file.path(dir_HCP, "restricted_HCP.csv")
 # TEST PURPOSES ONLY TRYING WITH RESTRICTED DEMEOGRAPHICS
-HCP_unrestricted_fname <- file.path(dir_data, "inputs", "restricted_HCP_demographics.csv")
+HCP_unrestricted_fname <- file.path(dir_HCP, "restricted_HCP_demographics.csv")
 
 # Read CSV
 HCP_restricted <- read.csv(HCP_restricted_fname)
@@ -67,10 +69,10 @@ nThreads = 46 # number of threads to use to estimate priors
 
 # Parameter sweep definition for prior estimation
 encoding_sweep = c("combined") # Using only combined c("LR", "RL", "combined") 
-nIC_sweep = c(0, 1, 2, 15, 25) # Yeo, MSC, PROFUMO, GICA 15, GICA 25
+nIC_sweep = c(0, 1, 2, 15, 25) # Yeo, MSC, PROFUMO, GICA 15, GICA 25, see details in 04_estimate_priors.R
 GSR_sweep = c(FALSE, TRUE)
 
 # Parameter definition for fit BBM
 method_variance = "unbiased"
-brainMap_prior = 0 # Yeo 17 selected, see details in 5_estimate_priors.R
+brainMap_prior = 0 # Yeo 17 selected, see details in 04_estimate_priors.R
 

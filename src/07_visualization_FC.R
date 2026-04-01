@@ -12,7 +12,7 @@ library(fMRItools)
 
 library(ggplot2)
 
-prior_files <- list.files(file.path(dir_data, "outputs", "priors"), recursive = TRUE, full.names = TRUE)
+prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE)
 
 source(file.path(dir_project, "src", "7_best_match_IC.R"))
 
@@ -76,7 +76,7 @@ for (file in prior_files) {
     parcellation <- parts[3]   
     gsr_status <- parts[4]  
 
-    out_dir <- file.path(dir_data, "outputs", "priors_plots", parcellation, encoding, gsr_status, "FC")
+    out_dir <- file.path(dir_data, "priors", parcellation, "plots_FC")
     cat("out_dir:", out_dir, "\n")
     dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 

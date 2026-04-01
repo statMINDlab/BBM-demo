@@ -13,7 +13,7 @@ estimate_and_export_prior <- function(
   usePar
 ) {
     # Get final list of subjects 
-    final_subject_ids <- readRDS(file.path(dir_data, "outputs", "filtering", sprintf("valid_%s_subjects_balanced.rds", encoding)))
+    final_subject_ids <- readRDS(file.path(dir_data, "priors", "filtering", sprintf("valid_%s_subjects_balanced.rds", encoding)))
 
     # Construct file paths
     if (encoding == "LR" | encoding == "RL") {
@@ -53,7 +53,7 @@ estimate_and_export_prior <- function(
     }
     
     gsr_label <- ifelse(GSR, "GSR", "noGSR")
-    save_dir <- file.path(dir_data, "priors", parcellation, gsr_label)
+    save_dir <- file.path(dir_data, "priors", parcellation)
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
 
     cat(sprintf("Estimating prior for encoding: %s , parcellation: %s , %s, Using %s threads\n",encoding, parcellation, gsr_label, as.character(usePar)))
@@ -61,7 +61,7 @@ estimate_and_export_prior <- function(
     # Start scrubbing procedure, keeping ten minutes below FD threshold.
     
     # get fd flags from inputs
-    fd_flags = readRDS(file.path(dir_data, "outputs", "filtering", "fd_flags.rds"))
+    fd_flags = readRDS(file.path(dir_data, "priors", "filtering", "fd_flags.rds"))
     
     # Define number of volumes to keep
     keep_volumes <-floor(min_total_sec / TR_HCP)
@@ -120,7 +120,7 @@ estimate_and_export_prior <- function(
     # Yeo17 parcellation
     if (nIC == 0) {
 
-        GICA <- readRDS(file.path(dir_data, "inputs", "Yeo17_simplified_mwall.rds"))
+        GICA <- readRDS(file.path(dir_data, "templates", "Yeo17_simplified_mwall.rds"))
 
         # Include certain ICs (1:17 not 0 or -1 -> medial wall)
         valid_keys <- GICA$meta$cifti$labels[[1]]$Key
@@ -152,7 +152,7 @@ estimate_and_export_prior <- function(
     # MSC
     } else if (nIC == 1) {
 
-        GICA <- readRDS(file.path(dir_data, "inputs", "MSC_parcellation.rds"))
+        GICA <- readRDS(file.path(dir_data, "templates", "MSC_parcellation.rds"))
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
@@ -177,7 +177,7 @@ estimate_and_export_prior <- function(
     # PROFUMO
     } else if (nIC == 2) {
 
-        PROFUMO <- readRDS(file.path(dir_data, "inputs", "PROFUMO_simplified_mwall.rds"))
+        PROFUMO <- readRDS(file.path(dir_data, "templates", "PROFUMO_simplified_mwall.rds"))
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
@@ -204,7 +204,7 @@ estimate_and_export_prior <- function(
     # GICA
     } else {
 
-        GICA <- file.path(dir_data, "inputs", sprintf("GICA%d.dscalar.nii", nIC))
+        GICA <- file.path(dir_data, "templates", sprintf("GICA%d.dscalar.nii", nIC))
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,

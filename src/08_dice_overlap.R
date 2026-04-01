@@ -30,14 +30,14 @@ dice_overlap <- function(X, Y = NULL) {
     }
 }
 
-source(file.path(dir_project, "src", "12_best_match_IC.R"))
+source(file.path(dir_project, "src", "06_best_match_IC.R"))
 
 ########## PARCELLATIONS ##########
 
 lim <- 1
 
 # Yeo17
-parcellation <- readRDS(file.path(dir_data, "outputs", "parcellations", "Yeo17_simplified_mwall.rds"))
+parcellation <- readRDS(file.path(dir_data, "templates", "Yeo17_simplified_mwall.rds"))
 v <- c(
   parcellation$data$cortex_left,
   parcellation$data$cortex_right
@@ -85,7 +85,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "Yeo17_parcellation_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "Yeo17_parcellation_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -107,7 +107,7 @@ ggplot2::ggsave(
 
 
 # MSC
-parcellation <- readRDS(file.path(dir_data, "outputs", "parcellations", "MSC_parcellation.rds"))
+parcellation <- readRDS(file.path(dir_data, "templates", "MSC_parcellation.rds"))
 name = "MSC"
 v <- c(
   parcellation$data$cortex_left,
@@ -141,7 +141,8 @@ p <- plot_FC_gg(
     legend.position="none"
   ) + scale_fill_gradientn(colours = viridisLite::mako(256, direction = -1))
 
- ggplot2::ggsave(file.path(dir_data, "outputs", "dice_overlap", "MSC_parcellation_overlap.png"), plot = p, bg = "white", width=6, height=6) 
+
+ ggplot2::ggsave(file.path(dir_data, "priors", parcellation, "dice_overlap", "MSC_parcellation_overlap.png"), plot = p, bg = "white", width=6, height=6) 
 
 # p_fixed <- set_panel_size(p, width = grid::unit(4, "in"), height = grid::unit(4, "in"))
 # ggplot2::ggsave(
@@ -167,7 +168,7 @@ fixed_size_plot <- egg::set_panel_size(
 gridExtra::grid.arrange(fixed_size_plot)
 
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "MSC_parcellation_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "MSC_parcellation_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -176,7 +177,7 @@ ggplot2::ggsave(
 
 
 # PROFUMO
-parcellation <- readRDS(file.path(dir_data, "outputs", "parcellations", "PROFUMO_simplified_mwall.rds"))
+parcellation <- readRDS(file.path(dir_data, "templates", "PROFUMO_simplified_mwall.rds"))
 name = "PROFUMO"
 v <- rbind(
   parcellation$data$cortex_left,
@@ -235,7 +236,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "PROFUMO_parcellation_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "PROFUMO_parcellation_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -304,7 +305,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "GICA15_parcellation_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "GICA15_parcellation_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -452,7 +453,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "Yeo17_prior_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "Yeo17_prior_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -521,7 +522,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "MSC_prior_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "MSC_prior_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -590,7 +591,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "PROFUMO_prior_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "PROFUMO_prior_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300
@@ -655,7 +656,7 @@ gridExtra::grid.arrange(fixed_size_plot)
 
 # --- save ---
 ggplot2::ggsave(
-  filename = file.path(dir_data, "outputs", "dice_overlap", "GICA15_prior_overlap.png"),
+  filename = file.path(dir_data, "priors", parcellation, "dice_overlap", "GICA15_prior_overlap.png"),
   plot = fixed_size_plot,
   bg = "white",
   width = 8, height = 8, dpi = 300

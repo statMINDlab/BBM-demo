@@ -1,20 +1,20 @@
 # Balance sex within age groups
 
 # Load FD-filtered lists
-valid_LR_subjects_FD <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_FD.csv"))$subject_id
-valid_RL_subjects_FD <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_RL_subjects_FD.csv"))$subject_id
-valid_combined_subjects_FD <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_combined_subjects_FD.csv"))$subject_id
+valid_LR_subjects_FD <- read.csv(file.path(dir_data, "priors", "filtering", "valid_LR_subjects_FD.csv"))$subject_id
+valid_RL_subjects_FD <- read.csv(file.path(dir_data, "priors", "filtering", "valid_RL_subjects_FD.csv"))$subject_id
+valid_combined_subjects_FD <- read.csv(file.path(dir_data, "priors", "filtering", "valid_combined_subjects_FD.csv"))$subject_id
 
 # Load unrelated-filtered lists if they exist
-if (file.exists(file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_unrelated.csv"))) {
-  valid_LR_subjects_unrelated <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_unrelated.csv"))$subject_id
-  valid_RL_subjects_unrelated <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_RL_subjects_unrelated.csv"))$subject_id
-  valid_combined_subjects_unrelated <- read.csv(file.path(dir_data, "outputs", "filtering", "valid_combined_subjects_unrelated.csv"))$subject_id
+if (file.exists(file.path(dir_data, "priors", "filtering", "valid_LR_subjects_unrelated.csv"))) {
+  valid_LR_subjects_unrelated <- read.csv(file.path(dir_data, "priors", "filtering", "valid_LR_subjects_unrelated.csv"))$subject_id
+  valid_RL_subjects_unrelated <- read.csv(file.path(dir_data, "priors", "filtering", "valid_RL_subjects_unrelated.csv"))$subject_id
+  valid_combined_subjects_unrelated <- read.csv(file.path(dir_data, "priors", "filtering", "valid_combined_subjects_unrelated.csv"))$subject_id
 }
 
 for (encoding in c("LR", "RL", "combined")) {
     
-    if (file.exists(file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_unrelated.csv"))) {
+    if (file.exists(file.path(dir_data, "priors", "filtering", "valid_LR_subjects_unrelated.csv"))) {
         filtered_subjects <- HCP_unrestricted[HCP_unrestricted$Subject %in% get(sprintf("valid_%s_subjects_unrelated", encoding)), ]
     } else {
         # If skipping step 2 (no access to restricted data / not filtering by unrelated)
@@ -50,10 +50,10 @@ for (encoding in c("LR", "RL", "combined")) {
     }  
 }
 
-write.csv(data.frame(subject_id=valid_LR_subjects_balanced), file = file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_balanced.csv"), row.names = FALSE)
-write.csv(data.frame(subject_id=valid_RL_subjects_balanced), file = file.path(dir_data, "outputs", "filtering", "valid_RL_subjects_balanced.csv"), row.names = FALSE)
-write.csv(data.frame(subject_id=valid_combined_subjects_balanced), file = file.path(dir_data, "outputs", "filtering", "valid_combined_subjects_balanced.csv"), row.names = FALSE)
+write.csv(data.frame(subject_id=valid_LR_subjects_balanced), file = file.path(dir_data, "priors", "filtering", "valid_LR_subjects_balanced.csv"), row.names = FALSE)
+write.csv(data.frame(subject_id=valid_RL_subjects_balanced), file = file.path(dir_data, "priors", "filtering", "valid_RL_subjects_balanced.csv"), row.names = FALSE)
+write.csv(data.frame(subject_id=valid_combined_subjects_balanced), file = file.path(dir_data, "priors", "filtering", "valid_combined_subjects_balanced.csv"), row.names = FALSE)
 
-saveRDS(valid_LR_subjects_balanced, file = file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_balanced.rds"))
-saveRDS(valid_RL_subjects_balanced, file = file.path(dir_data, "outputs", "filtering", "valid_RL_subjects_balanced.rds"))
-saveRDS(valid_combined_subjects_balanced, file = file.path(dir_data, "outputs", "filtering", "valid_combined_subjects_balanced.rds"))
+saveRDS(valid_LR_subjects_balanced, file = file.path(dir_data, "priors", "filtering", "valid_LR_subjects_balanced.rds"))
+saveRDS(valid_RL_subjects_balanced, file = file.path(dir_data, "priors", "filtering", "valid_RL_subjects_balanced.rds"))
+saveRDS(valid_combined_subjects_balanced, file = file.path(dir_data, "priors", "filtering", "valid_combined_subjects_balanced.rds"))

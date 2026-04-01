@@ -1,6 +1,6 @@
 # Plots both the mean and standard deviation components for all priors
 
-prior_files <- list.files(file.path(dir_project, "priors"), recursive = TRUE, full.names = TRUE)
+prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE)
 
 get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
 

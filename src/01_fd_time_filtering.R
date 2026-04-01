@@ -76,11 +76,11 @@ valid_combined_subjects_FD <- intersect(valid_LR_subjects_FD, valid_RL_subjects_
 
 dir.create(file.path(dir_data, "outputs", "filtering"), recursive = TRUE, showWarnings = FALSE)
 
-write.csv(data.frame(subject_id=valid_LR_subjects_FD), file = file.path(dir_data, "outputs", "filtering", "valid_LR_subjects_FD.csv"), row.names = FALSE)
-write.csv(data.frame(subject_id=valid_RL_subjects_FD), file = file.path(dir_data, "outputs", "filtering", "valid_RL_subjects_FD.csv"), row.names = FALSE)
-write.csv(data.frame(subject_id=valid_combined_subjects_FD), file = file.path(dir_data, "outputs", "filtering", "valid_combined_subjects_FD.csv"), row.names = FALSE)
-write.csv(fd_summary, file = file.path(dir_data, "outputs", "filtering", "fd_summary.csv"), row.names = TRUE)
+write.csv(data.frame(subject_id=valid_LR_subjects_FD), file = file.path(dir_data, "priors", "filtering", "valid_LR_subjects_FD.csv"), row.names = FALSE)
+write.csv(data.frame(subject_id=valid_RL_subjects_FD), file = file.path(dir_data, "priors", "filtering", "valid_RL_subjects_FD.csv"), row.names = FALSE)
+write.csv(data.frame(subject_id=valid_combined_subjects_FD), file = file.path(dir_data, "priors", "filtering", "valid_combined_subjects_FD.csv"), row.names = FALSE)
+write.csv(fd_summary, file = file.path(dir_data, "priors", "filtering", "fd_summary.csv"), row.names = TRUE)
 
-saveRDS(fd_flags, file.path(dir_data, "outputs", "filtering", "fd_flags.rds"))
+saveRDS(fd_flags, file.path(dir_data, "priors", "filtering", "fd_flags.rds"))
 
 

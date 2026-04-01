@@ -61,7 +61,7 @@ order = list()
 # SPATIAL OVERLAP MATRICES - Load base parcellation (YEO 17) ######
 
 # PARCELLATION
-parcellation <- readRDS(file.path(dir_data, "outputs", "parcellations", "Yeo17_simplified_mwall.rds"))
+parcellation <- readRDS(file.path(dir_data, "templates", "Yeo17_simplified_mwall.rds"))
 
 v <- c(
   parcellation$data$cortex_left,
@@ -105,7 +105,7 @@ labs <- rownames(parcellation$meta$cifti$labels$parcels)[parcellation$meta$cifti
 # Start for MSC #####################################################################
 
 # PARCELLATION
-parcellation <- readRDS(file.path(dir_data, "outputs", "parcellations" , "MSC_parcellation.rds"))
+parcellation <- readRDS(file.path(dir_data, "templates" , "MSC_parcellation.rds"))
 basename = "MSC"
 
 v <- c(
@@ -135,7 +135,7 @@ order[[basename]] <- list(ic_order = ordered_idx)
 # Start for GICA15 #####################################################################
 
 # PARCELLATION
-scalar_input <- read_cifti(file.path(dir_data, "inputs", "GICA15.dscalar.nii"))
+scalar_input <- read_cifti(file.path(dir_data, "templates", "GICA15.dscalar.nii"))
 basename = "GICA15"
 
 # keep only non-medial wall cortical data
@@ -157,7 +157,7 @@ ordered_idx <- order(best_match)
 order[[basename]] <- list(ic_order = ordered_idx)
 
 # Start for GICA25 #####################################################################
-scalar_input <- read_cifti(file.path(dir_data, "inputs", "GICA25.dscalar.nii"))
+scalar_input <- read_cifti(file.path(dir_data, "templates", "GICA25.dscalar.nii"))
 basename = "GICA25"
 
 # keep only non-medial wall cortical data
@@ -179,7 +179,7 @@ ordered_idx <- order(best_match)
 order[[basename]] <- list(ic_order = ordered_idx)
 
 # PROFUMO #####################################################################
-profumo <- read_cifti(file.path(dir_data, "inputs", "PROFUMO.dscalar.nii"))
+profumo <- read_cifti(file.path(dir_data, "templates", "PROFUMO.dscalar.nii"))
 # this prior has the mdial wall not defined for some reason, applying fix.
 profumo$meta$cortex$medial_wall_mask <- scalar_input$meta$cortex$medial_wall_mask
 basename = "PROFUMO"

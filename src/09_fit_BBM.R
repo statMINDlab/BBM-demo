@@ -11,13 +11,13 @@
 sourcedir = "~/Documents/GitHub/BayesianBrainMapping-priors/src"
 # run setup steps
 # Setup up dependencies and parameters
-source(file.path(sourcedir, "0_setup.R"))
+source(file.path(sourcedir, "setup.R"))
 
 # load dependencies
 library("parallel")
 
 # source brainMap for function
-source(file.path(sourcedir, "11_brainMap.R"))
+#source(file.path(sourcedir, "11_brainMap.R"))
 
 ### Start parameter definition #################################################
 
