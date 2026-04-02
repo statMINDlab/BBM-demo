@@ -101,7 +101,7 @@ This section initializes the environment by loading required packages, setting a
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 github_repo_dir <- getwd()
 src_dir <- file.path(github_repo_dir, "../src")
-source(file.path(src_dir, "0_setup.R"))
+source(file.path(src_dir, "setup.R"))
 ```
 
 ## Using Priors for Individual-Level Brain Mapping

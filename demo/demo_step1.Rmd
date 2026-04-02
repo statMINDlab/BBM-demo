@@ -31,8 +31,30 @@ ciftiTools.setOption("wb_path", wb_path)
 dir_project <- file.path(getwd(), "..") # Path to GitHub folder
 dir_data <- file.path(dir_project, "data")
 dir_manuscript <- file.path(dir_project, "manuscript")
-# dir_train <- "/path/to/training/BOLD/data"
-# dir_prior <- "/path/where/to/output/prior"
+
+## Start definitions 
+# precalculated priors URL look-up table
+prior_url_lookup <- list(
+  Yeo17 = "https://osf.io/k6vx8/files/u2r6e",
+  GICA15 = "https://osf.io/k6vx8/files/2dk58",
+  GICA25 = "https://osf.io/k6vx8/files/2umyv",
+  MSC = "https://osf.io/k6vx8/files/7knmf",
+  PROFUMO = "https://osf.io/k6vx8/files/vsxg7"
+)
+
+# Default mode main component idx per template (for visualization purposes)
+# This can be modified to visualize other networks/components as desired.
+default_idx <- list(
+  Yeo17 = 14, # DefaultA
+  GICA15 = 2, #
+  GICA25 = 3, # 
+  MSC = 1,    # 
+  PROFUMO = 1 # 
+)
+
+# phase encoding direction for BOLD in population priors
+phe = "combined"
+
 ```
 
 ## Bayesian Brain Mapping Overview
@@ -101,7 +123,7 @@ This section initializes the environment by loading required packages, setting a
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 github_repo_dir <- getwd()
 src_dir <- file.path(github_repo_dir, "../src")
-source(file.path(src_dir, "0_setup.R"))
+#source(file.path(src_dir, "setup.R"))
 ```
 
 ## Prior Estimation with `estimate_prior()`:
@@ -157,13 +179,13 @@ For details on how this parcellation was processed and simplified for use, see [
 To run it yourself, you must have access to HCP data and update `dir_train` with the path to your HCP data directory.
 Pre-computed priors are available for download from [OSF](https://osf.io/k6vx8/files/osfstorage) and are used in the model fitting section below.
 
-Running `estimate_prior()` on the full subject list (\~350 subjects) takes approximately 27 hours and uses 135 GB of memory when run sequentially (verify this).
-With parallel processing enabled via `usePar`, runtime is significantly reduced.
+Running `estimate_prior()` on the full subject list (\~350 subjects) takes approximately 27 hours and uses 6 GB of memory when run sequentially. 
+With parallel processing enabled via `usePar`, runtime is significantly reduced. Using 48 concurrent threads, prior were estimated in 2 hours with a peak memory usage of 126 GB.
 
 ```{r warning=FALSE, eval=FALSE}
 
 # Read in template
-Yeo17 <- readRDS(file.path(dir_data, "Yeo17_simplified_mwall.rds"))
+Yeo17 <- readRDS(file.path(dir_data, "templates", "Yeo17_simplified_mwall.rds"))
 # Exclude 0 or -1 -> medial wall
 valid_keys <- Yeo17$meta$cifti$labels[[1]]$Key
 inds <- valid_keys[valid_keys > 0]
@@ -206,44 +228,65 @@ First, we load the pre-estimated prior that will be used for visualization and m
 This file is included in the *data_OSF* repository under `priors/Yeo17/` and can be loaded after downloading from OSF — no need to re-run `estimate_prior()`:
 
 ```{r load-prior, eval=FALSE}
-# download the prior from OSF and place it in data/priors/Yeo17/ before running this code
-osf_url <- "https://osf.io/k6vx8/files/u2r6e"
-prior_download <- osf_download(osf_retrieve_file(osf_url), path = file.path(dir_data, "priors/Yeo17/noGSR"))
+################################################################################
+# Select tempalte to use for the remainder of this demo
+template <- "Yeo17" # options: "Yeo17", "GICA15", "GICA25", "MSC", "PROFUMO"
+gsr_mode <- "noGSR" # options: "GSR", "noGSR"
+################################################################################
 
-prior <- readRDS(file.path(dir_data, "priors/Yeo17/noGSR/prior_combined_Yeo17_noGSR.rds"))
+osf_url <- prior_url_lookup[[template]]
+
+# check if file exists. If not, download from OSF and load it. If it does, just load it.
+prior_fname <- file.path(dir_data, "priors", template, paste0("prior_", phe, "_", template, "_", gsr_mode,".rds"))
+
+if (!file.exists(prior_fname)) {
+  message("Prior file not found locally. Downloading from OSF...")
+  osf_tibble <- osf_download(osf_retrieve_file(osf_url), path = dirname(prior_fname), verbose = FALSE, progress = TRUE, conflicts = "skip")
+} else {
+  message("Prior file found locally. Loading...")
+}
+
+# regardless, load the prior file
+prior <- readRDS(prior_fname)
 ```
 
 ### Priors for Spatial Engagement
 
 The Yeo17 parcellation divides the cortex into 17 functional networks.
 See [Appendix C](#appendix-parcellations) for details on how this parcellation was prepared.
-The `6_visualization_prior.R` script in `src/` loads each estimated prior file and plots both the mean and standard deviation.
+The `05_visualization_prior.R` script in `src/` loads each estimated prior file and plots both the mean and standard deviation.
 
 **The code below is shown for reference only.** Pre-computed plot images are included in the repository under `priors/priors_plots`, so you do not need to run this code — the figures are displayed directly below.
 
 ```{r plot-prior, eval=FALSE}
+
+  # If Yeo17 template, template_parc_table needs to be updated to only reflect the correct number of labels (17)
+  if (template == "Yeo17") {
+    prior$template_parc_table <- subset(prior$template_parc_table, prior$template_parc_table$Key > 0)
+  }
+
     # Plot mean
     plot(
       prior,
       stat = "mean",
-      fname = file.path(dir_data, "priors/Yeo17/plots_maps/prior_combined_Yeo17_noGSR_DefaultA.png"),
-      idx = 14,
-      title = "Yeo17 Network DefaultA (#14) (mean)"
+      fname = file.path(dir_data, "priors", template, "plots_maps", paste0("prior_", phe, "_", template, "_", gsr_mode, "_DefaultA.png")),
+      idx = default_idx[[template]],
+      title = paste0(template, "Network Default (#", as.character(default_idx[[template]]),") (mean)")
     )
 
     # Plot standard deviation
     plot(
       prior,
       stat = "sd",
-      fname = file.path(dir_data, "priors/Yeo17/plots_maps/prior_combined_Yeo17_noGSR_DefaultA.png"),
-      idx = 14,
-      title = "Yeo17 Network DefaultA (#14) (sqrt varNN)"
+      fname = file.path(dir_data, "priors", template, "plots_maps", paste0("prior_", phe, "_", template, "_", gsr_mode, "_DefaultA.png")),
+      idx = default_idx[[template]],
+      title = paste0(template, "Network Default (#", as.character(default_idx[[template]]),") (sqrt varNN)")
     )
 ```
 
 ```{r model-overview2, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_maps/prior_combined_Yeo17_noGSR_DefaultA_mean.png"))
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_maps/prior_combined_Yeo17_noGSR_DefaultA_sd.png"))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_maps", paste0("prior_", phe, "_", template, "_", gsr_mode, "_DefaultA_mean.png")))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_maps", paste0("prior_", phe, "_", template, "_", gsr_mode, "_DefaultA_sd.png")))
 ```
 
 ### Priors for Functional Connectivity
@@ -258,7 +301,33 @@ For the group-level prior, we compute and plot:
 
 -   Standard deviation of FC estimates (from the variance matrix)
 
-The plots are saved in: `data/outputs/priors_plots/Yeo17/combined/noGSR/FC/`
+The plots are saved in: `data/priors/*template_name*/plots_FC/` with filenames indicating the template, GSR mode, and estimation method.
+
+```{r plot-FC, eval=FALSE}
+
+  # If Yeo17 template, template_parc_table needs to be updated to only reflect the correct number of labels (17)
+  if (template == "Yeo17") {
+    prior$template_parc_table <- subset(prior$template_parc_table, prior$template_parc_table$Key > 0)
+  }
+
+    # Plot mean
+    plot(
+      prior,
+      stat = "mean",
+      fname = file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_Cholesky_mean.png")),
+      idx = default_idx[[template]],
+      title = paste0(template, "Network Default (#", as.character(default_idx[[template]]),") (mean)")
+    )
+
+    # Plot standard deviation
+    plot(
+      prior,
+      stat = "sd",
+      fname = file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_Cholesky_sd.png")),
+      idx = default_idx[[template]],
+      title = paste0(template, "Network Default (#", as.character(default_idx[[template]]),") (sqrt varNN)")
+    )
+```
 
 #### PNG imgaes (4 per prior)
 
@@ -275,10 +344,10 @@ These visualizations allow for a direct comparison of spatial FC structure and u
 The figures below show the mean and standard deviation of FC priors using Cholesky and Inverse-Wishart methods.
 
 ```{r model-overview3, echo=FALSE, fig.align='center', message=TRUE, warning=TRUE, out.width="100%"}
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_FC/prior_combined_Yeo17_noGSR_FC_Cholesky_mean.png"))
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_FC/prior_combined_Yeo17_noGSR_FC_Cholesky_sd.png"))
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_FC/prior_combined_Yeo17_noGSR_FC_IW_mean.png"))
-knitr::include_graphics(file.path(dir_data, "priors/Yeo17/plots_FC/prior_combined_Yeo17_noGSR_FC_IW_sd.png"))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_Cholesky_mean.png")))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_Cholesky_sd.png")))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_IW_mean.png")))
+knitr::include_graphics(file.path(dir_data, "priors", template, "plots_FC", paste0("prior_", phe, "_", template, "_", gsr_mode, "_FC_IW_sd.png")))
 ```
 
 ## Appendix A: Subject Filtering {#appendix-subjectfiltering}
