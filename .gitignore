@@ -2,3 +2,9 @@ demo/.Rhistory
 demo/static_html/
 data/priors/prior_*
 data/posteriors/**/*_BBM.rds
+# ignore generate plots for posteriors
+data/posteriors/sub-*/*/posterior_plots/*
+data/posteriors/sub-*/*/engagement_plots/*
+# except for demo examples
+!data/posteriors/sub-*/*/posterior_plots/*DefaultA*
+data/posteriors/sub-*/*/engagement_plots/*DefaultA*

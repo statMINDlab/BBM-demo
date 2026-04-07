@@ -60,19 +60,10 @@ phe = "combined"
 # look up table for component names per template (for visualization purposes)
 template_component_lookup <- list(
   Yeo17 = data.frame(Key = 1:17, Network = c("Visual", "Somatomotor A", "Somatomotor B", "Dorsal Attention A", "Dorsal Attention B", "Ventral Attention A", "Ventral Attention B", "Limbic A", "Limbic B", "Frontoparietal A", "Frontoparietal B", "Default A", "Default B", "Default C", "Default D", "Default E", "Unknown")),
-  GICA15 = data.frame(Key = 1:15, Component = c("Component 1", "Component 2", "Component 3", "Component 4", "Component 5", "Component 6", "Component 7", "Component 8", "Component 9", "Component 10", "Component 11", "Component 12", "Component 13", "Component 14", "Component 15")),
-  GICA25 = data.frame(Key = 1:25, Component = c("Component 1", "Component 2", "Component 3", "Component 4", "Component 5", "Component 6", "Component 7", "Component 8", "Component 9", "Component 10","Component 11","Component 12","Component 13","Component 14","Component 15","Component 16","Component 17","Component 18","Component 19","Component 20","Component 21","Component 22","Component 23","Component 24","Component 25")),
-   MSC = data.frame(Key = c(1:10), Component = c("Motor/Hand/Foot/Face (M1)", 
-                                                  "Auditory (A1)", 
-                                                  "Visual (V1)", 
-                                                  "Fronto-Parietal (FP)", 
-                                                  "Cingulo-Opercular (CO)", 
-                                                  "Default Mode (DMN)", 
-                                                  "Salience (SAL)", 
-                                                  "Dorsal Attention (DAN)", 
-                                                  "Ventral Attention (VAN)", 
-                                                  "Unknown")),
-   PROFUMO = data.frame(Key = c(1:24), Component = paste("PROFUMO Component ", c(1:24)))
+  MSC = data.frame(Key = c(1:13), Component = c("Medial Wall", "Default", "Lat Vis", "Fronto-Par", "Med Vis", "Dors Attn", "Premotor", "Vent Attn", "Salience", "Cing-Operc", "Hand SM", "Face SM", "Auditory")),
+  GICA15 = data.frame(Key = 1:15, Component = paste("IC ", c(1:15))),
+  GICA25 = data.frame(Key = 1:25, Component = paste("IC ", c(1:25))),
+  PROFUMO = data.frame(Key = c(1:24), Component = paste("IC ", c(1:24)))
 )
 
 ```
@@ -329,6 +320,8 @@ The plots are saved in: `data/priors/*template_name*/plots_FC/` with filenames i
 # Otherwise, no component name is provided, since this is only for demonstration purposes
 if (template == "Yeo17") {
   labs <- rownames(subset(prior$template_parc_table, prior$template_parc_table$Key > 0))
+} else if(template %in% c("GICA15", "GICA25", "PROFUMO", "MSC")) {
+  labs <- template_component_lookup[[template]]$Component
 } else {
   labs <- paste0("IC ", seq(1, ncol(prior$prior$mean)))
 }
