@@ -2,7 +2,7 @@
 All templates used in the companion paper are available either directly in this repository or after signing the relveant Data User Agreement (DUA). A detailed list including sources and adaptations is presented here:
 
 ## PROFUMO
-Presented in ~Modelling subject variability in the spatial and temporal characteristics of functional modes~ (Harrison et al. 2020), [doi:10.1016/j.neuroimage.2020.117226](https://doi.org/10.1016/j.neuroimage.2020.117226) can be downloaded from the study [repository](https://balsa.wustl.edu/study/gm40X), under the name `subject_maps_group12_run.dtseries.nii`.
+Presented in _Modelling subject variability in the spatial and temporal characteristics of functional modes_ (Harrison et al. 2020), [doi:10.1016/j.neuroimage.2020.117226](https://doi.org/10.1016/j.neuroimage.2020.117226) can be downloaded from the study [repository](https://balsa.wustl.edu/study/gm40X), under the name `subject_maps_group12_run.dtseries.nii`.
 
 After converting to dscalar, the subcortical structures where removed and the Human Connectome Project (HCP) medial wall mask was applied, the resulting template is saved as a RDS file and presented in this directory.
 
