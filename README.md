@@ -1,6 +1,6 @@
-# BBM-priors
+# Bayesian Brain Mapping demo & priors
 
-Population-derived priors/templates for Bayesian Brain Mapping (BBM; template ICA), with demos and reproducible scripts used in:
+Demo for Bayesian Brain Mapping (BBM) to accompany the manuscript:
 
 **Bayesian brain mapping: population-informed individualized functional topography and connectivity**  
 Nohelia Da Silva Sanchez, Diego Derman, Saige Rutherford, Damon D. Pham, Ellyn R. Butler, Mary Beth Nebel, Amanda F. Mejia  
@@ -11,53 +11,41 @@ https://osf.io/k6vx8/files/osfstorage
 
 ## Start Here: How to use this repository
 
-### 1) I only want to read examples and understand the workflow
+### Option 1: I only want to read examples and understand the workflow
 Open the rendered demos (no local run required):
 
-- Step 1: Population priors  
+- Demo 1: Population priors  
    https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step1.html
-- Step 2: Subject-level BBM fit  
+- Demo 2: Subject-level BBM fit  
    https://htmlpreview.github.io/?https://github.com/mandymejia/BBM-priors/refs/heads/main/demo/demo_step2.html
 
 This path is best if you want conceptual understanding of `estimate_prior()`, `fit_BBM()`, and `id_engagements()`.
 
-### 2) I want to run the demo step by step using different templates and making custom plots
-Use `demo/demo_step1.Rmd` and `demo/demo_step2.Rmd` interactively:
+### Option 2: I want to run the demo step by step using different templates and making custom plots
+Use `demo/demo_step1.Rmd` and/or `demo/demo_step2.Rmd` interactively:
 
 1. Install core dependencies (see [Requirements](#requirements)).
-2. Install `osfr` to download precomputed files from OSF.
-3. Open each Rmd and run chunks gradually.
-4. Change template settings (for example `template <- "Yeo17"` to other available templates) and rerun selected blocks.
-
-```r
-install.packages("osfr")
-```
+2. Install `osfr` to download precomputed files (priors and model fits) from OSF.
+3. (Optional) Change template settings (for example `template <- "Yeo17"` to other available templates).
+4. Run chunks sequentially.
 
 Important notes:
-- Demo code is educational by default; many heavy chunks are marked `eval=FALSE`. By default, knitting the demos will use the Yeo17 template and the plots saved within this repo.
-- You can run most of the demo without estimating priors from scratch by downloading priors/posteriors from OSF.
+- Demo code is meant to be educational by default; many computationally heavy chunks or those that depend on HCP data are marked `eval=FALSE`. By default, knitting the demos will use the Yeo17 template and the plots saved within this repo.
+- You can run most of the demo without estimating priors from scratch by downloading priors and posteriors from OSF.
 
-### 3) I want to run and modify the full pipeline on my own dataset
+### Option 3: I want to run and modify the full pipeline on my own dataset
 Use the `src/` scripts. This path is for users doing major customization (new templates, different subject selection, alternative preprocessing, custom outputs).
 
 Recommended order:
 
 1. Configure environment and paths in `src/setup.R`.
-2. Run the full chain with `src/00_main.R` or run scripts individually.
-
-```r
-source("src/setup.R")
-source("src/00_main.R")
-```
-
-Expected high-level stages in `src/`:
-
-- `01_fd_time_filtering.R`: motion and scan-duration filtering
-- `02_unrelated_filtering.R`: keep unrelated participants
-- `03_balance_age_sex.R`: age/sex balancing
-- `04_estimate_prior.R`: estimate priors over parameter sweep
-- `05_visualization_prior.R` to `08_dice_overlap.R`: prior diagnostics and visualizations
-- `09_fit_BBM.R` and `10_BBM_visualization.R`: subject-level mapping and plots
+2. Run the full chain with `src/00_main.R` or run scripts individually:
+ - `01_fd_time_filtering.R`: motion and scan-duration filtering
+ - `02_unrelated_filtering.R`: keep unrelated participants
+ - `03_balance_age_sex.R`: age/sex balancing
+ - `04_estimate_prior.R`: estimate priors over parameter sweep
+ - `05_visualization_prior.R` to `08_dice_overlap.R`: prior diagnostics and visualizations
+ - `09_fit_BBM.R` and `10_BBM_visualization.R`: subject-level mapping and plots
 
 ## Requirements
 
