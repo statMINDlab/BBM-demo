@@ -9,7 +9,7 @@ Preprint: https://doi.org/10.48550/arXiv.2602.01551
 Public data assets (priors, example posteriors):  
 https://osf.io/k6vx8/files/osfstorage
 
-## Start Here: How to use this repository
+## Start Here: Howgoogle scholar to use this repository
 
 ### Option 1: I only want to read examples and understand the workflow
 Open the rendered demos (no local run required):
@@ -50,8 +50,8 @@ Recommended order:
 ## Requirements
 
 ### Software
-- R (tested with modern R 4.x setups)
-- Connectome Workbench (`wb_command`) installed and accessible
+- R
+- Connectome Workbench (`wb_command`).The correct path needs to be set in the setup chunk (option 2) and/or in the `setup` script (option 3).
 
 ### R packages
 At minimum, the pipeline uses:
@@ -100,6 +100,7 @@ BBM-priors/
 ```
 
 ## Typical Inputs and Outputs
+These are defined in the `setup.R` script, if you are using Option 3.
 
 ### Inputs you must define
 - Project/data paths (`dir_project`, `dir_data`, `dir_HCP`) in `src/setup.R`
@@ -124,6 +125,6 @@ All outputs are set to `dir_data`:
 
 If you use this repository, please cite:
 
-Da Silva Sanchez N, Derman D, Rutherford S, Pham DD, Butler ER, Nebel MB, Mejia AF.  
+Da Silva Sanchez* N, Derman* D, Rutherford S, Pham DD, Butler ER, Nebel MB, Mejia AF.  
 *Bayesian brain mapping: population-informed individualized functional topography and connectivity.*  
 arXiv (2026). https://doi.org/10.48550/arXiv.2602.01551
