@@ -1,8 +1,8 @@
 #Dependencies ##########################################################
 
 #remove.packages("fMRItools")
-#devtools::install_github("mandymejia/fMRItools", "7.0")
-library(fMRItools)
+#devtools::install_github("mandymejia/fMRItools", "8.0") # Handled in setup.R
+library(fMRItools) # version 0.8.0, should be handled in setup
 library("scales")
 
 # Helper functions ################################################
@@ -77,7 +77,7 @@ for (i in seq_along(parcel_ids)) {
 }
 
 
-# Collapse to 8 networks
+# Collapse to 8 networks with the objective of having consistent FC matrices that reflect functional order.
 mega_map <- list(
   Vis   = c(1,2),
   SomMot   = c(3,4),
@@ -91,7 +91,7 @@ mega_map <- list(
 
 mega_names <- names(mega_map)
 
-yeo_mega <- matrix(0, nrow = nrow(yeo_onehot), ncol = length(mega_map))
+yeo_mega <- matrix(0, nrow = nrow(yeo_onehot), ncol = length(mega_map)) # mega-networks reflect functional areas.
 
 for (i in seq_along(mega_map)) {
   yeo_mega[, i] <- rowSums(yeo_onehot[, mega_map[[i]], drop = FALSE]) > 0
@@ -121,9 +121,11 @@ for (i in seq_along(parcel_ids)) {
   one_hot[, i] <- as.integer(v == parcel_ids[i])
 }
 
-dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
+#dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
 
-best_match <- apply(dice_mat, 1, which.max)
+#best_match <- apply(dice_mat, 1, which.max) # deprecated for new fMRItools function
+best_match <- match_nets(one_hot, yeo_mega) 
+
 
 # makes vector with order of indices for plotting
 ordered_idx <- order(best_match)
@@ -147,9 +149,10 @@ parcel_ids  <- 1:15
 
 one_hot <- parcellation
 
-dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
+#dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
 
-best_match <- apply(dice_mat, 1, which.max)
+#best_match <- apply(dice_mat, 1, which.max) # deprecated for new fMRItools function
+best_match <- match_nets(one_hot, yeo_mega) 
 
 # makes vector with order of indices for plotting
 ordered_idx <- order(best_match)
@@ -169,9 +172,10 @@ parcel_ids  <- 1:25
 
 one_hot <- parcellation
 
-dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
+#dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
 
-best_match <- apply(dice_mat, 1, which.max)
+#best_match <- apply(dice_mat, 1, which.max) # deprecated for new fMRItools function
+best_match <- match_nets(one_hot, yeo_mega) 
 
 # makes vector with order of indices for plotting
 ordered_idx <- order(best_match)
@@ -193,9 +197,10 @@ parcel_ids  <- 1:12
 
 one_hot <- parcellation
 
-dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
+#dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
 
-best_match <- apply(dice_mat, 1, which.max)
+#best_match <- apply(dice_mat, 1, which.max) # deprecated for new fMRItools function
+best_match <- match_nets(one_hot, yeo_mega) 
 
 # makes vector with order of indices for plotting
 ordered_idx <- order(best_match)
@@ -217,9 +222,10 @@ parcellation <- threshold_maps(matrix_input, thr = colMeans(matrix_input) + 2 * 
 
 one_hot <- parcellation
 
-dice_mat <- dice_coef(one_hot, yeo_mega)
+#dice_mat = dice_coef(one_hot, yeo_mega) # Compute Dice coefficient matrix
 
-best_match <- apply(dice_mat, 1, which.max)
+#best_match <- apply(dice_mat, 1, which.max) # deprecated for new fMRItools function
+best_match <- match_nets(one_hot, yeo_mega) 
 
 ordered_idx <- order(best_match)
 

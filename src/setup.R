@@ -6,13 +6,14 @@
 # install.packages("ciftiTools")            
 # devtools::install_github("mandymejia/fMRIscrub", "14.0")          
 # install.packages("fMRItools") # deprecated for new BBM
-# devtools::install_github("mandymejia/fMRItools", "7.0", force=TRUE)
+# devtools::install_github("mandymejia/fMRItools", "8.0", force=TRUE)
 # install.packages("viridis")
 # install.packages("BayesBrainMap")
 # install.packages("doParallel")
 # devtools::install_github("diegoderman/BayesBrainMap", ref = "2.0")
 
 # Load packages
+library(fMRItools)       # version 0.8.0
 library(ggcorrplot)      # version 0.1.4.1
 library(gsignal)         # version 0.3.7
 library(ciftiTools)      # version 0.17.4
