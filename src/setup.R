@@ -23,8 +23,19 @@ library(BayesBrainMap)   # version: 0.2.0
 library(tidyverse)       # version: 2.0.0
 library(purrr)           # version: 0.2.0
 
-# Set CIFTI Workbench path
-wb_path <- "~/workbench-linux64-v2.1.0/workbench/bin_linux64" # Path to Workbench command, e.g. "~/workbench-command" or "C:/path/to/workbench-command.exe"
+# Set CIFTI Workbench path according to the system
+if (Sys.info()["sysname"] == "Darwin") {
+  wb_path <- "~/workbench/bin_macosxub"
+} else if (Sys.info()["sysname"] == "Linux") {
+  # if nodename ends with quartz, it's quartz
+  if (endsWith(Sys.info()["nodename"], "quartz.uits.iu.edu")) {
+    wb_path <- "~/Downloads/workbench/bin_rh_linux64"
+  } else {
+    wb_path <- "~/Downloads/workbench/bin_linux64"
+  }
+} else {
+  stop("Unsupported operating system")
+}
 # Check if the path exists, otherwise throw an error
 if (!file.exists(wb_path)) {
   stop(paste("Workbench path does not exist:", wb_path))
