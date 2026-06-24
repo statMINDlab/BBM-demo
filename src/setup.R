@@ -66,7 +66,7 @@ HCP_restricted_fname <- file.path(dir_HCP, "..", "restricted_HCP.csv")
 HCP_unrestricted_fname <- file.path(dir_HCP, "restricted_HCP_demographics.csv")
 
 # Read CSV
-HCP_restricted <- read.csv(HCP_restricted_fname)
+#HCP_restricted <- read.csv(HCP_restricted_fname)
 HCP_unrestricted <- read.csv(HCP_unrestricted_fname)
 
 # All subject IDS
