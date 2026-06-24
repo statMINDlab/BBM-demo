@@ -16,7 +16,7 @@ if (!exists("dir_project")) {
 FWHM      <- 5
 sessions  <- c("REST1", "REST2")
 encodings <- c("LR", "RL")
-dir_out   <- "/N/project/BayesianBrainMapping/smoothed_bold"
+dir_out   <- file.path(storage_dir, "smoothed_bold")
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 dir.create(dir_out, recursive = TRUE, showWarnings = FALSE)

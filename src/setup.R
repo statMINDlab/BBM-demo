@@ -28,12 +28,15 @@ library(foreach)
 # Set CIFTI Workbench path according to the system
 if (Sys.info()["sysname"] == "Darwin") {
   wb_path <- "~/workbench/bin_macosxub"
+  storage_dir <- "~/Documents/BayesianBrainMapping"
 } else if (Sys.info()["sysname"] == "Linux") {
   # if nodename ends with quartz, it's quartz
   if (endsWith(Sys.info()["nodename"], "quartz.uits.iu.edu")) {
     wb_path <- "~/Downloads/workbench/bin_rh_linux64"
+    storage_dir <- "/N/project/BayesianBrainMapping"
   } else {
     wb_path <- "~/Downloads/workbench/bin_linux64"
+    storage_dir <- "~/Documents/BayesianBrainMapping"
   }
 } else {
   stop("Unsupported operating system")
