@@ -63,7 +63,7 @@ dir_HCP <- "~/Documents/hcp_dcwan" # Path to folder with HCP demographics CSVs
 
 HCP_restricted_fname <- file.path(dir_HCP, "..", "restricted_HCP.csv")
 # TEST PURPOSES ONLY TRYING WITH RESTRICTED DEMEOGRAPHICS
-HCP_unrestricted_fname <- file.path(dir_HCP, "restricted_HCP_demographics.csv")
+HCP_unrestricted_fname <- file.path(dir_HCP, "..", "restricted_HCP_demographics.csv")
 
 # Read CSV
 #HCP_restricted <- read.csv(HCP_restricted_fname)
