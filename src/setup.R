@@ -54,7 +54,7 @@ ciftiTools.setOption("wb_path", wb_path)
 #
 #########################################################################
 # Bring your own HCP access for both restricted and unrestricted data
-dir_project <- "~/Documents/GitHub/BBM-priors" # Path to GitHub folder
+dir_project <- "~/Documents/GitHub/BBM-demo" # Path to GitHub folder
 
 dir_data <- file.path(dir_project, "data") # Path to data folder
 
