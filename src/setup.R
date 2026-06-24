@@ -22,6 +22,8 @@ library(viridis)         # version 0.6.5
 library(BayesBrainMap)   # version: 0.2.0
 library(tidyverse)       # version: 2.0.0
 library(purrr)           # version: 0.2.0
+library(doParallel)
+library(foreach)
 
 # Set CIFTI Workbench path according to the system
 if (Sys.info()["sysname"] == "Darwin") {

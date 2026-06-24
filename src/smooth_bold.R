@@ -25,14 +25,25 @@ subject_ids <- read.csv(
   file.path(dir_data, "priors", "filtering", "valid_combined_subjects_FD.csv")
 )$subject_id
 
-cat(sprintf("Subjects: %d | Sessions: %s | Encodings: %s | FWHM: %d mm\n",
+cat(sprintf("Subjects: %d | Sessions: %s | Encodings: %s | FWHM: %d mm | Threads: %d\n",
             length(subject_ids),
             paste(sessions,  collapse = "/"),
             paste(encodings, collapse = "/"),
-            FWHM))
+            FWHM,
+            nThreads))
 
-# ── Smoothing loop ────────────────────────────────────────────────────────────
-for (subject in subject_ids) {
+# ── Smoothing loop (parallelized over subjects) ───────────────────────────────
+cl <- makeCluster(nThreads)
+registerDoParallel(cl)
+on.exit(stopCluster(cl), add = TRUE)
+
+foreach(
+  subject = subject_ids,
+  .packages = "ciftiTools",
+  .export   = c("dir_out", "dir_HCP", "sessions", "encodings", "FWHM", "wb_path")
+) %dopar% {
+
+  ciftiTools.setOption("wb_path", wb_path)
 
   sub_label   <- paste0("sub-", subject)
   sub_out_dir <- file.path(dir_out, sub_label)
@@ -49,23 +60,16 @@ for (subject in subject_ids) {
                              paste0(run_tag, "_Atlas_MSMAll_hp2000_clean",
                                     "_smoothed-", FWHM, "mm.dtseries.nii"))
 
-      if (file.exists(out_path)) {
-        cat(sprintf("  [skip] %s %s %s\n", sub_label, session, encoding))
-        next
-      }
+      if (file.exists(out_path)) next
 
       if (!file.exists(bold_path)) {
         warning(sprintf("File not found, skipping: %s", bold_path))
         next
       }
 
-      cat(sprintf("  [run ] %s %s %s\n", sub_label, session, encoding))
-
       xii <- read_cifti(bold_path)
       xii <- smooth_cifti(xii, surf_FWHM = FWHM, vol_FWHM = FWHM)
       write_cifti(xii, out_path)
-
-      cat(sprintf("         -> %s\n", out_path))
     }
   }
 }
