@@ -17,6 +17,9 @@ FWHM      <- 5
 sessions  <- c("REST1", "REST2")
 encodings <- c("LR", "RL")
 dir_out   <- file.path(storage_dir, "smoothed_bold")
+# Use the midthickness surfaces for smoothing, as they are more biologically relevant.
+surfL_path <- file.path(storage_dir, "HCP", "S1200.L.midthickness_MSMAll.32k_fs_LR.surf.gii")
+surfR_path <- file.path(storage_dir, "HCP", "S1200.R.midthickness_MSMAll.32k_fs_LR.surf.gii")
 
 # ── Setup ─────────────────────────────────────────────────────────────────────
 dir.create(dir_out, recursive = TRUE, showWarnings = FALSE)
@@ -40,7 +43,8 @@ on.exit(stopCluster(cl), add = TRUE)
 foreach(
   subject = subject_ids,
   .packages = "ciftiTools",
-  .export   = c("dir_out", "dir_HCP", "sessions", "encodings", "FWHM", "wb_path")
+  .export   = c("dir_out", "dir_HCP", "sessions", "encodings", "FWHM", "wb_path",
+                "surfL_path", "surfR_path")
 ) %dopar% {
 
   ciftiTools.setOption("wb_path", wb_path)
@@ -68,7 +72,8 @@ foreach(
       }
 
       xii <- read_cifti(bold_path)
-      xii <- smooth_cifti(xii, surf_FWHM = FWHM, vol_FWHM = FWHM)
+      xii <- smooth_cifti(xii, surf_FWHM = FWHM, vol_FWHM = FWHM,
+                          surfL_fname = surfL_path, surfR_fname = surfR_path)
       write_cifti(xii, out_path)
     }
   }
