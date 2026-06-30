@@ -13,8 +13,21 @@ estimate_and_export_prior <- function(
   usePar,
   nSubs = NULL
 ) {
-    # Get final list of subjects 
-    final_subject_ids <- readRDS(file.path(dir_data, "priors", "filtering", sprintf("valid_%s_subjects_balanced.rds", encoding)))
+
+    # if nSubs is not null, get the right subj_list, modify path names accordingly.
+
+    if (!is.null(nSubs)) {
+        subj_list <- read.csv(file.path(dir_data, "priors", "filtering", sprintf("valid_%s_subjects_balanced.csv", encoding)))$subject_id
+        if (nSubs > length(subj_list)) {
+            stop(sprintf("nSubs (%d) is greater than the number of available subjects (%d) for encoding %s", nSubs, length(subj_list), encoding))
+        }
+        subj_list <- subj_list[1:nSubs]
+        final_subject_ids <- subj_list
+    } else {
+        # Get final list of subjects 
+        final_subject_ids <- readRDS(file.path(dir_data, "priors", "filtering", sprintf("valid_%s_subjects_balanced.rds", encoding)))
+    }
+
 
     # Construct file paths
     if (encoding == "LR" | encoding == "RL") {
@@ -66,8 +79,6 @@ estimate_and_export_prior <- function(
     
     # Define number of volumes to keep
     keep_volumes <-floor(min_total_sec / TR_HCP)
-    
-    # if nSubs is not null, get the right subj_list, modify path names accordingly.
     
     # make nested list fd_flags into tibble, for easy vectorization
     fd_tbl <- fd_flags %>%
