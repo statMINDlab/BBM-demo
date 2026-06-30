@@ -10,7 +10,8 @@ estimate_and_export_prior <- function(
   GSR,
   dir_data,
   TR_HCP,
-  usePar
+  usePar,
+  nSubs = NULL
 ) {
     # Get final list of subjects 
     final_subject_ids <- readRDS(file.path(dir_data, "priors", "filtering", sprintf("valid_%s_subjects_balanced.rds", encoding)))
@@ -65,6 +66,8 @@ estimate_and_export_prior <- function(
     
     # Define number of volumes to keep
     keep_volumes <-floor(min_total_sec / TR_HCP)
+    
+    # if nSubs is not null, get the right subj_list, modify path names accordingly.
     
     # make nested list fd_flags into tibble, for easy vectorization
     fd_tbl <- fd_flags %>%

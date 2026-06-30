@@ -49,7 +49,8 @@ for(encoding in encoding_sweep){
                                   GSR,
                                   dir_data,
                                   TR_HCP,
-                                  usePar = nThreads)
+                                  usePar = nThreads,
+                                  nSubs = 25)
       })
       
       performance_tbl <- add_row(
