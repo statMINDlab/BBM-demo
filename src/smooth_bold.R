@@ -25,7 +25,7 @@ surfR_path <- file.path(storage_dir, "HCP", "S1200.R.midthickness_MSMAll.32k_fs_
 dir.create(dir_out, recursive = TRUE, showWarnings = FALSE)
 
 subject_ids <- read.csv(
-  file.path(dir_data, "priors", "filtering", "valid_combined_subjects_FD.csv")
+  file.path(dir_data, "priors", "filtering", "valid_combined_subjects_balanced.csv")
 )$subject_id
 
 cat(sprintf("Subjects: %d | Sessions: %s | Encodings: %s | FWHM: %d mm | Threads: %d\n",
@@ -71,6 +71,8 @@ foreach(
         next
       }
 
+      sprintf("Reading xifti for sub-%s ses-%s encoding %s", subject, session, encoding)
+      
       xii <- read_cifti(bold_path)
       xii <- smooth_cifti(xii, surf_FWHM = FWHM, vol_FWHM = FWHM,
                           surfL_fname = surfL_path, surfR_fname = surfR_path)
