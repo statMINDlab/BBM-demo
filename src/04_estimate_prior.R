@@ -67,7 +67,12 @@ estimate_and_export_prior <- function(
     }
     
     gsr_label <- ifelse(GSR, "GSR", "noGSR")
-    save_dir <- file.path(dir_data, "priors", parcellation)
+    # If nSubs is not null, modify the save_dir to include nSubs in the path
+    if (is.null(nSubs)) {
+        save_dir <- file.path(dir_data, "priors", parcellation)
+    } else {
+        save_dir <- file.path(dir_data, "priors", parcellation, sprintf("nSubs-%d", nSubs))
+    }
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
 
     cat(sprintf("Estimating prior for encoding: %s , parcellation: %s , %s, Using %s threads\n",encoding, parcellation, gsr_label, as.character(usePar)))
