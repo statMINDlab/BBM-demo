@@ -48,9 +48,19 @@ for (file in prior_files) {
   base_name <- tools::file_path_sans_ext(basename(file))
 
   parts <- strsplit(base_name, "_")[[1]]
-  encoding <- parts[2]      
-  parcellation <- parts[3]   
-  gsr_status <- parts[4]  
+  encoding <- parts[2]
+  parcellation <- parts[3]
+  gsr_status <- parts[4]
+
+  # Detect nSubs subdirectory (e.g. "nSubs-50") from the file path
+  parent_dir <- basename(dirname(file))
+  nSubs_dir <- if (grepl("^nSubs-\\d+$", parent_dir)) parent_dir else NULL
+
+  plot_base_dir <- if (!is.null(nSubs_dir)) {
+    file.path(dir_data, "priors", parcellation, nSubs_dir, "priors_plots")
+  } else {
+    file.path(dir_data, "priors", parcellation, "priors_plots")
+  }
 
   # If Yeo17 template, template_parc_table needs to be updated to only reflect the correct number of labels (17)
   if (grepl("Yeo17", base_name)) {
@@ -61,18 +71,18 @@ for (file in prior_files) {
   # Save 4 images for each IC (cortical sd and mean, and subcortical sd and mean)
   for (i in 1:Q) {
     if (grepl("Yeo17", base_name, ignore.case = TRUE)) {
-      label_name <- rownames(prior$template_parc_table)[prior$template_parc_table$Key == i]  
-      fname <- file.path(dir_data, "priors", parcellation, "priors_plots", paste0(base_name, "_", label_name))
+      label_name <- rownames(prior$template_parc_table)[prior$template_parc_table$Key == i]
+      fname <- file.path(plot_base_dir, paste0(base_name, "_", label_name))
     } else if (grepl("MSC", base_name, ignore.case = TRUE)) {
       label_name <- rownames(prior$template_parc_table)[i]
-      fname <- file.path(dir_data, "priors", parcellation, "priors_plots", paste0(base_name, "_", label_name))
+      fname <- file.path(plot_base_dir, paste0(base_name, "_", label_name))
     } else if (grepl("PROFUMO", base_name, ignore.case = TRUE)) {
-      # label_name <- rownames(prior$template_parc_table)[prior$template_parc_table$Key == i-1]  
-      fname <- file.path(dir_data, "priors", parcellation, "priors_plots", paste0(base_name, "_", i))
+      # label_name <- rownames(prior$template_parc_table)[prior$template_parc_table$Key == i-1]
+      fname <- file.path(plot_base_dir, paste0(base_name, "_", i))
       # write label name into tempalte_parc_table, to write plots.
       prior$template_parc_table$Label <- label_name
-    } else {  
-      fname <- file.path(dir_data, "priors", parcellation, "priors_plots",  paste0(base_name, "_IC", i))
+    } else {
+      fname <- file.path(plot_base_dir, paste0(base_name, "_IC", i))
     }
 
     outdir <- dirname(fname)
