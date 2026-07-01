@@ -6,7 +6,7 @@
 # install.packages("ciftiTools")            
 # devtools::install_github("mandymejia/fMRIscrub", "14.0")          
 # install.packages("fMRItools") # deprecated for new BBM
-# devtools::install_github("mandymejia/fMRItools", "8.0", force=TRUE)
+# devtools::install_github("mandymejia/ciftiTools", "20.0", force=TRUE)
 # install.packages("viridis")
 # install.packages("BayesBrainMap")
 # install.packages("doParallel")
@@ -16,7 +16,7 @@
 library(fMRItools)       # version 0.8.0
 library(ggcorrplot)      # version 0.1.4.1
 library(gsignal)         # version 0.3.7
-library(ciftiTools)      # version 0.17.4
+library(ciftiTools)      # version 0.20.0
 library(fMRIscrub)       # version 0.14.7
 library(viridis)         # version 0.6.5
 library(BayesBrainMap)   # version: 0.2.0
@@ -31,7 +31,7 @@ if (Sys.info()["sysname"] == "Darwin") {
   storage_dir <- "~/Documents/BayesianBrainMapping"
 } else if (Sys.info()["sysname"] == "Linux") {
   # if nodename ends with quartz, it's quartz
-  if (endsWith(Sys.info()["nodename"], "quartz.uits.iu.edu")) {
+  if (endsWith(Sys.info()["nodename"], "uits.iu.edu")) {
     wb_path <- "~/Downloads/workbench/bin_rh_linux64"
     storage_dir <- "/N/project/BayesianBrainMapping"
   } else {
@@ -59,11 +59,25 @@ dir_project <- "~/Documents/GitHub/BBM-demo" # Path to GitHub folder
 dir_data <- file.path(dir_project, "data") # Path to data folder
 
 # Bring your own HCP access for both restricted and unrestricted data
-dir_HCP <- "~/Documents/hcp_dcwan" # Path to folder with HCP demographics CSVs
+# Set CIFTI Workbench path according to the system
+if (Sys.info()["sysname"] == "Darwin") {
+  dir_HCP <- "~/Documents/hcp_dcwan"
+} else if (Sys.info()["sysname"] == "Linux") {
+  # if nodename ends with quartz, it's quartz
+  if (endsWith(Sys.info()["nodename"], "uits.iu.edu")) {
+    dir_HCP <- "/N/project/hcp_dcwan"
+    dir_smoothHCP <- "/N/project/BayesianBrainMapping/smoothed_bold"
+  } else {
+    dir_HCP <- "~/Documents/hcp_dcwan"
+  }
+} else {
+  dir_HCP <- "~/Documents/hcp_dcwan" # set your own directory for HCP
+}
 
 HCP_restricted_fname <- file.path(dir_HCP, "..", "restricted_HCP.csv")
 # TEST PURPOSES ONLY TRYING WITH RESTRICTED DEMEOGRAPHICS
-HCP_unrestricted_fname <- file.path(dir_HCP, "..", "restricted_HCP_demographics.csv")
+#HCP_unrestricted_fname <- file.path(dir_HCP, "..", "restricted_HCP_demographics.csv")
+HCP_unrestricted_fname <- file.path("~/Documents", "restricted_HCP_demographics.csv")
 
 # Read CSV
 #HCP_restricted <- read.csv(HCP_restricted_fname)
@@ -81,7 +95,8 @@ nT_HCP <- 1200 # Timepoints for each resting state scan
 min_total_sec <- 600 # Minimum duration of time series after scrubbing (600 sec = 10 min)
 
 # Calculation constants
-nThreads = 46 # number of threads to use to estimate priors
+nThreads = 1 # number of threads to use to estimate priors
+#Sys.setenv(OMP_NUM_THREADS = "1")
 
 # Parameter sweep definition for prior estimation
 encoding_sweep = c("combined") # Using only combined c("LR", "RL", "combined") 

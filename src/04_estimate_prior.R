@@ -11,7 +11,8 @@ estimate_and_export_prior <- function(
   dir_data,
   TR_HCP,
   usePar,
-  nSubs = NULL
+  nSubs = NULL,
+  smoothing = NULL
 ) {
 
     # if nSubs is not null, get the right subj_list, modify path names accordingly.
@@ -55,6 +56,21 @@ estimate_and_export_prior <- function(
         encoding2 = "RL"
         session2 = "REST1"
     }
+  
+    # if smoothing is not null, get the smoothed BOLD sessions
+    if (!is.null(smoothing) & encoding == "combined"){
+      BOLD_paths1 <- file.path(dir_smoothHCP, 
+                               paste0("sub-", final_subject_ids), 
+                               sprintf("rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean_smoothed-%dmm.dtseries.nii", smoothing))
+      encoding1 = "LR"
+      session1 = "REST1"
+      
+      BOLD_paths1 <- file.path(dir_smoothHCP, 
+                               paste0("sub-", final_subject_ids), 
+                               sprintf("rfMRI_REST1_RL_Atlas_MSMAll_hp2000_clean_smoothed-%dmm.dtseries.nii", smoothing))
+      encoding2 = "RL"
+      session2 = "REST1"
+    }
 
     parcellation <- if (nIC == 0) {
         "Yeo17"
@@ -72,6 +88,11 @@ estimate_and_export_prior <- function(
         save_dir <- file.path(dir_data, "priors", parcellation)
     } else {
         save_dir <- file.path(dir_data, "priors", parcellation, sprintf("nSubs-%d", nSubs))
+    }
+    
+    # if smoothing is not null, modify the save_dir
+    if (is.null(smoothing)) {
+      save_dir <- paste0(save_dir, "_smooth-", smoothing)
     }
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
 
