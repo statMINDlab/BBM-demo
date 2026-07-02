@@ -16,8 +16,9 @@ source(file.path(sourcedir, "setup.R"))
 
 nIC_sweep = 0
 GSR_sweep = FALSE
-nThreads = 51
-nSubs = 200
+encoding = "combined"
+nThreads = 1
+nSubs = NULL
 smoothing = 5
 
 # Run framewise displacement filtering 
@@ -57,6 +58,7 @@ for(encoding in encoding_sweep){
                                   dir_data,
                                   TR_HCP,
                                   usePar = nThreads,
+                                  smoothing = smoothing,
                                   nSubs = nSubs)
       })
       
