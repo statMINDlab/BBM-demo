@@ -65,7 +65,7 @@ estimate_and_export_prior <- function(
       encoding1 = "LR"
       session1 = "REST1"
       
-      BOLD_paths1 <- file.path(dir_smoothHCP, 
+      BOLD_paths2 <- file.path(dir_smoothHCP, 
                                paste0("sub-", final_subject_ids), 
                                sprintf("rfMRI_REST1_RL_Atlas_MSMAll_hp2000_clean_smoothed-%dmm.dtseries.nii", smoothing))
       encoding2 = "RL"
@@ -91,7 +91,7 @@ estimate_and_export_prior <- function(
     }
     
     # if smoothing is not null, modify the save_dir
-    if (is.null(smoothing)) {
+    if (!is.null(smoothing)) {
       save_dir <- paste0(save_dir, "_smooth-", smoothing)
     }
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
@@ -268,3 +268,25 @@ estimate_and_export_prior <- function(
 
     cat(sprintf("Saved prior for encoding: %s , parcellation: %s , %s\n",encoding, parcellation, gsr_label))
 }
+
+
+# prior1 = file.path(dir_data, "priors", "Yeo17", "nSubs-50", "prior_combined_Yeo17_noGSR.rds")
+# prior2 = file.path(dir_data, "priors", "Yeo17", "nSubs-50_smooth-5", "prior_combined_Yeo17_noGSR.rds")
+# 
+# p1 = readRDS(prior1)
+# p2 = readRDS(prior2)
+# 
+# p1$template_parc_table <- subset(p1$template_parc_table, p1$template_parc_table$Key > 0)
+# p2$template_parc_table <- subset(p2$template_parc_table, p2$template_parc_table$Key > 0)
+# 
+# plot(
+#   p1,
+#   stat = "var",
+#   idx = 1
+# )
+# plot(
+#   p2,
+#   stat = "var",
+#   idx = 1
+# )
+# 
