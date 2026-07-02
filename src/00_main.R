@@ -14,11 +14,13 @@ sourcedir = file.path(dir_project, "src")
 # Setup up dependencies and parameters
 source(file.path(sourcedir, "setup.R"))
 
+args = commandArgs(trailingOnly = TRUE)
+nSubs = if (length(args) < 1 || args[1] == "NULL") NULL else as.integer(args[1])
+
 nIC_sweep = 0
 GSR_sweep = FALSE
 encoding = "combined"
 nThreads = 1
-nSubs = NULL
 smoothing = 5
 
 # Run framewise displacement filtering 
