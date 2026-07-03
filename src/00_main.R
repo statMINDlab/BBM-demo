@@ -16,11 +16,12 @@ source(file.path(sourcedir, "setup.R"))
 
 args = commandArgs(trailingOnly = TRUE)
 nSubs = if (length(args) < 1 || args[1] == "NULL") NULL else as.integer(args[1])
+nThreads = if (length(args) < 2 || args[2] == 0) 51 else as.integer(args[2])
 
 nIC_sweep = 0
 GSR_sweep = FALSE
 encoding = "combined"
-nThreads = 1
+#nThreads = 51
 smoothing = 5
 
 # Run framewise displacement filtering 

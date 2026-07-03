@@ -270,8 +270,8 @@ estimate_and_export_prior <- function(
 }
 
 
-# prior1 = file.path(dir_data, "priors", "Yeo17", "nSubs-50", "prior_combined_Yeo17_noGSR.rds")
-# prior2 = file.path(dir_data, "priors", "Yeo17", "nSubs-50_smooth-5", "prior_combined_Yeo17_noGSR.rds")
+# prior1 = file.path(dir_data, "priors", "Yeo17", "nSubs-25", "prior_combined_Yeo17_noGSR.rds")
+# prior2 = file.path(dir_data, "priors", "Yeo17", "nSubs-25_smooth-5", "prior_combined_Yeo17_noGSR.rds")
 # 
 # p1 = readRDS(prior1)
 # p2 = readRDS(prior2)
@@ -289,4 +289,4 @@ estimate_and_export_prior <- function(
 #   stat = "var",
 #   idx = 1
 # )
-# 
+
