@@ -28,7 +28,7 @@ yeo17_simplify$meta$cifti$labels[[1]] <- rbind(
   yeo17_simplify$meta$cifti$labels[[1]]
 )
 # Medial wall mask
-mwall_path <- file.path(dir_data, "inputs", "Human.MedialWall_Conte69.32k_fs_LR.dlabel.nii")
+mwall_path <- file.path(dir_data, "templates", "Human.MedialWall_Conte69.32k_fs_LR.dlabel.nii")
 mwall_cifti <- read_cifti(mwall_path)
 mwall_L <- mwall_cifti$data$cortex_left == 0
 mwall_R <- mwall_cifti$data$cortex_right == 0

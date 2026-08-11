@@ -1,6 +1,6 @@
 # Plots both the mean and standard deviation components for all priors
 
-prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR.rds")
+prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR_local.rds")
 
 get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
 
@@ -45,6 +45,7 @@ get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
 for (file in prior_files) {
   prior <- readRDS(file)
 
+  
   base_name <- tools::file_path_sans_ext(basename(file))
 
   parts <- strsplit(base_name, "_")[[1]]
@@ -54,13 +55,17 @@ for (file in prior_files) {
 
   # Detect nSubs subdirectory (e.g. "nSubs-50") from the file path
   parent_dir <- basename(dirname(file))
-  nSubs_dir <- if (grepl("^nSubs-\\d+$", parent_dir)) parent_dir else NULL
+  nSubs_dir <- if (grepl("^nSubs-\\d+", parent_dir)){
+    regmatches(parent_dir, regexpr("^nSubs-\\d+", parent_dir))
+  } else NULL
 
   plot_base_dir <- if (!is.null(nSubs_dir)) {
     file.path(dir_data, "priors", parcellation, nSubs_dir, "priors_plots")
   } else {
     file.path(dir_data, "priors", parcellation, "priors_plots")
   }
+  
+  if (grepl("_smooth-\\d+$", parent_dir)) plot_base_dir <- file.path(dir_data, "priors", parcellation, paste0(nSubs_dir, "_smooth-5"), "priors_plots")
 
   # If Yeo17 template, template_parc_table needs to be updated to only reflect the correct number of labels (17)
   if (grepl("Yeo17", base_name)) {
@@ -98,6 +103,7 @@ for (file in prior_files) {
     plot(
       prior,
       stat = "mean",
+      zlim = c(-0.2, 0.15),
       fname = fname,
       idx = i,
       title = title
@@ -107,6 +113,7 @@ for (file in prior_files) {
     plot(
       prior,
       stat = "sd",
+      zlim = c(0, 0.2),
       fname = fname,
       idx = i,
       title = title
