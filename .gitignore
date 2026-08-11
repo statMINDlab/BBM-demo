@@ -10,3 +10,4 @@ data/posteriors/sub-*/*/engagement_plots/*
 !data/posteriors/sub-*/*/posterior_plots/*DefaultA*
 data/posteriors/sub-*/*/engagement_plots/*DefaultA*
 data/priors
+src/.claude
