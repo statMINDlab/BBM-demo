@@ -14,10 +14,16 @@ sourcedir = file.path(dir_project, "src")
 # Setup up dependencies and parameters
 source(file.path(sourcedir, "setup.R"))
 
-nIC_sweep = 0
-GSR_sweep = FALSE
-nThreads = 51
-nSubs = 200
+cat(find.package("BayesBrainMap"))
+
+args = commandArgs(trailingOnly = TRUE)
+nSubs = if (length(args) < 1 || args[1] == "NULL") NULL else as.integer(args[1])
+nThreads = if (length(args) < 2 || args[2] == 0) 51 else as.integer(args[2])
+
+nIC_sweep = c(15)
+GSR_sweep = c(FALSE, TRUE)
+encoding = "combined"
+#nThreads = 26
 smoothing = 5
 
 # Run framewise displacement filtering 
@@ -28,6 +34,8 @@ smoothing = 5
 
 # Balance sex within age groups
 #source(file.path(sourcedir, "03_balance_age_sex.R"))
+
+#find.package("BayesBrainMap")
 
 ######## Begin estimate priors over the parameter sweep defined in 0_setup.R ######
 source(file.path(sourcedir,"04_estimate_prior.R"))
@@ -57,7 +65,9 @@ for(encoding in encoding_sweep){
                                   dir_data,
                                   TR_HCP,
                                   usePar = nThreads,
-                                  nSubs = nSubs)
+                                  smoothing = smoothing,
+                                  nSubs = nSubs,
+                                  scale_parameter = "local")
       })
       
       performance_tbl <- add_row(

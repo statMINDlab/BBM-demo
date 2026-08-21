@@ -3,7 +3,7 @@
 # #latest
 
 # remove.packages("fMRItools")
-# devtools::install_github("mandymejia/fMRItools", "7.0")
+# devtools::install_github("mandymejia/fMRItools", "8.0") # Version required for match_nets()
 library(fMRItools)
 
 # remove.packages("BayesBrainMap")
@@ -12,7 +12,7 @@ library(fMRItools)
 
 library(ggplot2)
 
-prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR.rds")
+prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR_local.rds")
 
 source(file.path(dir_project, "src", "06_best_match_IC.R"))
 
@@ -115,6 +115,7 @@ for (file in prior_files) {
     parcellation <- parts[3]
     gsr_status  <- parts[4]
 
+    
     out_dir <- file.path(dir_data, "priors", parcellation, "plots_FC")
     cat("out_dir:", out_dir, "\n")
     dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)

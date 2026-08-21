@@ -16,24 +16,24 @@ library(ggplot2)
 
 # prior_files <- prior_files[grepl("combined", prior_files) & grepl("GSR", prior_files) & grepl("GICA15", prior_files)]
 
-prior_files <- "~/Desktop/prior_combined_Yeo17_noGSR.rds"
+prior_files <- "~/Documents/GitHub/BBM-demo/data/priors/Yeo17_smooth-5/prior_combined_Yeo17_noGSR_local.rds"
 
-# get_prior_title <- function(base_name, encoding) {
-#   gsr <- if (grepl("noGSR", base_name)) "noGSR" else "GSR"
+get_prior_title <- function(base_name, encoding) {
+  gsr <- if (grepl("noGSR", base_name)) "noGSR" else "GSR"
 
-#   if (grepl("Yeo17", base_name, ignore.case = TRUE)) {
-#     return(paste0("Yeo17 ", gsr))
-#   } else if (grepl("MSC", base_name, ignore.case = TRUE)) {
-#     return(paste0("MSC ", gsr))
-#   } else if (grepl("PROFUMO", base_name, ignore.case = TRUE)) {
-#     return(paste0("PROFUMO ", gsr))
-#   }
+  if (grepl("Yeo17", base_name, ignore.case = TRUE)) {
+    return(paste0("Yeo17 ", gsr))
+  } else if (grepl("MSC", base_name, ignore.case = TRUE)) {
+    return(paste0("MSC ", gsr))
+  } else if (grepl("PROFUMO", base_name, ignore.case = TRUE)) {
+    return(paste0("PROFUMO ", gsr))
+  }
 
-#   ic_match <- regmatches(base_name, regexpr("GICA\\d+", base_name))
-#   nIC <- as.numeric(gsub("GICA", "", ic_match))
+  ic_match <- regmatches(base_name, regexpr("GICA\\d+", base_name))
+  nIC <- as.numeric(gsub("GICA", "", ic_match))
 
-#   paste0("GICA ", nIC, " ", gsr)
-# }
+  paste0("GICA ", nIC, " ", gsr)
+}
 
 for (file in prior_files) {
     cat("Processing prior:", file, "\n")
@@ -66,7 +66,7 @@ for (file in prior_files) {
     parcellation <- parts[3]   
     gsr_status <- parts[4]  
 
-    out_dir <- file.path(dir_data, "outputs", "priors_plots", parcellation, encoding, gsr_status, "FC")
+    out_dir <- file.path(dir_data, "priors", parcellation, "plots_FC")
     cat("out_dir:", out_dir, "\n")
     dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 

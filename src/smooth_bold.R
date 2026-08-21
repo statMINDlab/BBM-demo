@@ -14,7 +14,7 @@ if (!exists("dir_project")) {
 
 # ── Parameters ────────────────────────────────────────────────────────────────
 FWHM      <- 5
-sessions  <- c("REST1", "REST2")
+sessions  <- c("REST1") #c("REST1", "REST2")
 encodings <- c("LR", "RL")
 dir_out   <- file.path(storage_dir, "smoothed_bold")
 # Use the midthickness surfaces for smoothing, as they are more biologically relevant.
@@ -28,6 +28,8 @@ subject_ids <- read.csv(
   file.path(dir_data, "priors", "filtering", "valid_combined_subjects_balanced.csv")
 )$subject_id
 
+subject_ids <- rev(subject_ids)
+
 cat(sprintf("Subjects: %d | Sessions: %s | Encodings: %s | FWHM: %d mm | Threads: %d\n",
             length(subject_ids),
             paste(sessions,  collapse = "/"),
@@ -36,17 +38,18 @@ cat(sprintf("Subjects: %d | Sessions: %s | Encodings: %s | FWHM: %d mm | Threads
             nThreads))
 
 # ── Smoothing loop (parallelized over subjects) ───────────────────────────────
-cl <- makeCluster(nThreads)
-registerDoParallel(cl)
-on.exit(stopCluster(cl), add = TRUE)
+#cl <- makeCluster(nThreads)
+#registerDoParallel(cl)
+#on.exit(stopCluster(cl), add = TRUE)
 
-foreach(
-  subject = subject_ids,
-  .packages = "ciftiTools",
-  .export   = c("dir_out", "dir_HCP", "sessions", "encodings", "FWHM", "wb_path",
-                "surfL_path", "surfR_path")
-) %dopar% {
+#foreach(
+#  subject = subject_ids,
+#  .packages = "ciftiTools",
+#  .export   = c("dir_out", "dir_HCP", "sessions", "encodings", "FWHM", "wb_path",
+#                "surfL_path", "surfR_path")
+#) %dopar% {
 
+for (subject in subject_ids){
   ciftiTools.setOption("wb_path", wb_path)
 
   sub_label   <- paste0("sub-", subject)

@@ -12,8 +12,14 @@ estimate_and_export_prior <- function(
   TR_HCP,
   usePar,
   nSubs = NULL,
-  smoothing = NULL
+  smoothing = NULL,
+  scale_parameter = "local"
 ) {
+  
+    # if smoothing is used, do not smooth the scaling parameter bold
+    if (!is.null(smoothing)){
+      scale_sm_FWHM = 0
+    }
 
     # if nSubs is not null, get the right subj_list, modify path names accordingly.
 
@@ -65,7 +71,7 @@ estimate_and_export_prior <- function(
       encoding1 = "LR"
       session1 = "REST1"
       
-      BOLD_paths1 <- file.path(dir_smoothHCP, 
+      BOLD_paths2 <- file.path(dir_smoothHCP, 
                                paste0("sub-", final_subject_ids), 
                                sprintf("rfMRI_REST1_RL_Atlas_MSMAll_hp2000_clean_smoothed-%dmm.dtseries.nii", smoothing))
       encoding2 = "RL"
@@ -91,12 +97,14 @@ estimate_and_export_prior <- function(
     }
     
     # if smoothing is not null, modify the save_dir
-    if (is.null(smoothing)) {
+    if (!is.null(smoothing)) {
       save_dir <- paste0(save_dir, "_smooth-", smoothing)
     }
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
 
-    cat(sprintf("Estimating prior for encoding: %s , parcellation: %s , %s, Using %s threads\n",encoding, parcellation, gsr_label, as.character(usePar)))
+    cat(sprintf("Estimating prior for encoding: %s , parcellation: %s , smoothing %s, %s, Using %s threads\n",encoding, parcellation, smoothing, gsr_label, as.character(usePar)))
+    
+    cat(sprintf("Results will be saved in %s\n", save_dir))
     
     # Start scrubbing procedure, keeping ten minutes below FD threshold.
     
@@ -165,12 +173,16 @@ estimate_and_export_prior <- function(
         # Include certain ICs (1:17 not 0 or -1 -> medial wall)
         valid_keys <- GICA$meta$cifti$labels[[1]]$Key
         inds <- valid_keys[valid_keys > 0]
+        
 
         # Diego Debug print libpaths
+        find.package("BayesBrainMap")
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
                 BOLD2 = BOLD_paths2,
+                scale = scale_parameter, # Added mean local scaling of the input BOLD.
+                scale_sm_FWHM = scale_sm_FWHM, # Preprocessed data is assumed smoothed.
                 template = GICA,
                 GSR = GSR,
                 TR = TR_HCP,
@@ -187,19 +199,25 @@ estimate_and_export_prior <- function(
             )
         
         # Save file
-        saveRDS(prior, file.path(save_dir, sprintf("prior_%s_%s_%s.rds", encoding, parcellation, gsr_label)))
+        saveRDS(prior, file.path(save_dir, sprintf("prior_%s_%s_%s_%s.rds", encoding, parcellation, gsr_label, scale_parameter)))
 
     # MSC
     } else if (nIC == 1) {
 
         GICA <- readRDS(file.path(dir_data, "templates", "MSC_parcellation.rds"))
+        
+        #valid_keys <- GICA$meta$cifti$labels[[1]]$Key
+        #inds <- valid_keys[valid_keys > 0]
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
                 BOLD2 = BOLD_paths2,
                 template = GICA,
+                scale = scale_parameter, # Added mean local scaling of the input BOLD.
+                scale_sm_FWHM = scale_sm_FWHM, # Preprocessed data is assumed smoothed.
                 GSR = GSR,
                 TR = TR_HCP,
+                #inds = inds,
                 hpf = 0.01,
                 Q2 = 0,
                 Q2_max = NULL,
@@ -222,6 +240,8 @@ estimate_and_export_prior <- function(
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
                 BOLD2 = BOLD_paths2,
+                scale = scale_parameter, # Added mean local scaling of the input BOLD.
+                scale_sm_FWHM = scale_sm_FWHM, # Preprocessed data is assumed smoothed.
                 template = PROFUMO,
                 GSR = GSR,
                 TR = TR_HCP,
@@ -237,9 +257,8 @@ estimate_and_export_prior <- function(
             )
 
         # Save file
-        save_dir <- file.path(dir_data, "priors", "PROFUMO")
-        if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE)
-        saveRDS(prior, file.path(save_dir, sprintf("prior_%s_PROFUMO_%s.rds", encoding, gsr_label)))
+        saveRDS(prior, file.path(save_dir, sprintf("prior_%s_%s_%s.rds", encoding, parcellation, gsr_label)))
+        
 
     # GICA
     } else {
@@ -250,6 +269,8 @@ estimate_and_export_prior <- function(
                 BOLD = BOLD_paths1,
                 BOLD2 = BOLD_paths2,
                 template = GICA,
+                scale = scale_parameter, # Added mean local scaling of the input BOLD.
+                scale_sm_FWHM = scale_sm_FWHM, # Preprocessed data is assumed smoothed.
                 GSR = GSR,
                 TR = TR_HCP,
                 hpf = 0.01,
@@ -268,3 +289,25 @@ estimate_and_export_prior <- function(
 
     cat(sprintf("Saved prior for encoding: %s , parcellation: %s , %s\n",encoding, parcellation, gsr_label))
 }
+
+
+# prior1 = file.path(dir_data, "priors", "Yeo17", "nSubs-25", "prior_combined_Yeo17_noGSR.rds")
+# prior2 = file.path(dir_data, "priors", "Yeo17", "nSubs-25_smooth-5", "prior_combined_Yeo17_noGSR.rds")
+# 
+# p1 = readRDS(prior1)
+# p2 = readRDS(prior2)
+# 
+# p1$template_parc_table <- subset(p1$template_parc_table, p1$template_parc_table$Key > 0)
+# p2$template_parc_table <- subset(p2$template_parc_table, p2$template_parc_table$Key > 0)
+# 
+# plot(
+#   p1,
+#   stat = "var",
+#   idx = 1
+# )
+# plot(
+#   p2,
+#   stat = "var",
+#   idx = 1
+# )
+
