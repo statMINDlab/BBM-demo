@@ -181,11 +181,35 @@ ggsave(file.path(avg_dir, paste0("shrinkage_vs_mean", suffix, ".png")), p,
 ########################
 # Bins
 
+##Equally-spaced bins for each network
+# n_bins <- 30
+# 
+# trend <- scatter %>%
+#   group_by(component) %>%
+#   mutate(bin = ntile(subject_mean, n_bins)) %>%
+#   group_by(component, bin) %>%
+#   summarise(
+#     x  = median(subject_mean),
+#     lo = quantile(shrinkage, 0.25),
+#     hi = quantile(shrinkage, 0.75),
+#     y  = median(shrinkage),
+#     .groups = "drop"
+#   )
+
+
+## Homogeneous bins across networks
 n_bins <- 30
 
+# Common bin edges for ALL components: smallest -> largest of subject_mean
+bin_breaks <- seq(
+  min(scatter$subject_mean, na.rm = TRUE),
+  max(scatter$subject_mean, na.rm = TRUE),
+  length.out = n_bins + 1
+)
+
 trend <- scatter %>%
-  group_by(component) %>%
-  mutate(bin = ntile(subject_mean, n_bins)) %>%
+  filter(! component %in% c("LimbicA", "LimbicB")) %>%
+  mutate(bin = cut(subject_mean, breaks = bin_breaks, include.lowest = TRUE)) %>%
   group_by(component, bin) %>%
   summarise(
     x  = median(subject_mean),
@@ -262,18 +286,18 @@ average_trend <- trend %>%
   summarize(x = mean(x), y = mean(y))
 
 p_condensed <- ggplot() +
-  geom_line(data=trend, aes(x, y, group = component), linewidth = 0.7, color = "grey85") +
-  geom_line(data = average_trend, aes(x, y), linewidth = 1, color = 'red') +
+  geom_line(data=trend, aes(x, y, group = component, color = component), alpha = 0.5, linewidth = 0.75) +
+  geom_line(data = average_trend, aes(x, y), linewidth = 3, color = 'black') +
   scale_color_manual(values = network_colors, guide = "none") +
   scale_fill_manual(values = network_colors, guide = "none") +
-  coord_cartesian(ylim = c(0, 1), xlim = c(-0.2, 0.4)) +
+  coord_cartesian(ylim = c(0, 0.6), xlim = c(-0.8, 0.8)) +
   labs(
-    x = "Average subject mean (posterior)",
-    y = "Average shrinkage (lambda)",
-    title = sprintf("Shrinkage vs subject mean | %d subjects", n_used),
-    subtitle = "Red: average bin across network. Grey = individual networks"
+    x = "Average posterior mean",
+    y = "Average shrinkage",
+    title = NULL,
+    subtitle = NULL
   ) +
-  theme_minimal()
+  theme_minimal(base_size = 16)
 
 ggsave(file.path(avg_dir, paste0("shrinkage_vs_mean_summary", suffix, ".png")), p_condensed,
        width = 11, height = 7, dpi = 300)

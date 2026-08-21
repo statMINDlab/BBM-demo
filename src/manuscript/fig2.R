@@ -8,13 +8,14 @@ out_dir <- "~/Documents/GitHub/BBM-demo/manuscript"
 # set var_method for exporting figures 
 variance_method <- "non-negative"
 
-# YEO17
-prior_file <- "~/Documents/GitHub/BBM-demo/data/priors/Yeo17_smooth-5/prior_combined_Yeo17_noGSR_local.rds"
+# Select Parcellation
+parcellation <- "Yeo17"
+prior_file <- paste0("~/Documents/GitHub/BBM-demo/data/priors/", parcellation, "_smooth-5/prior_combined_", parcellation, "_noGSR.rds")
 prior <- readRDS(prior_file)
 
 # Set the prior parameters
-Q <- 17
-idx <- 14
+Q <- 25
+idx <- 2
 prior$template_parc_table <- subset(prior$template_parc_table, prior$template_parc_table$Key > 0)
 
 plot(
@@ -43,7 +44,7 @@ plot(
 
 
 # GICA15
-prior_file <- file.path(dir_data, "priors", sprintf("GICA%d/prior_combined_GICA%d_noGSR_local.rds", 15, 15))
+prior_file <- file.path(dir_data, "priors", sprintf("GICA%d_smooth-5/prior_combined_GICA%d_noGSR.rds", 15, 15))
 prior <- readRDS(prior_file)
 
 # Set the prior parameters
@@ -76,7 +77,7 @@ plot(
 )
 
 # GICA25
-prior_file <- file.path(dir_data, "priors", sprintf("GICA%d/prior_combined_GICA%d_noGSR_local.rds", 25, 25))
+prior_file <- file.path(dir_data, "priors", sprintf("GICA%d_smooth-5/prior_combined_GICA%d_noGSR.rds", 25, 25))
 prior <- readRDS(prior_file)
 
 # Set the prior parameters
@@ -88,7 +89,7 @@ plot(
   prior,
   what = "maps",
   stat  = "mean",
-  idx   = 1:25,
+  idx   = idx,
   title = "",
   cex.title = 1e-6,
   legend_embed = FALSE,   

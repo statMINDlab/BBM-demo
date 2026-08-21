@@ -11,3 +11,4 @@ data/posteriors/sub-*/*/engagement_plots/*
 data/posteriors/sub-*/*/engagement_plots/*DefaultA*
 data/priors
 src/.claude
+.claude

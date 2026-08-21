@@ -8,9 +8,25 @@
 # install.packages("fMRItools") # deprecated for new BBM
 # devtools::install_github("mandymejia/ciftiTools", "20.0", force=TRUE)
 # install.packages("viridis")
-# install.packages("BayesBrainMap")
+#install.packages("BayesBrainMap", force = TRUE)
 # install.packages("doParallel")
-# devtools::install_github("diegoderman/BayesBrainMap", ref = "2.0")
+#devtools::install_github("mandymejia/BayesBrainMap", ref = "2.0")
+
+# toggle correct BBM version
+bold_scaling <- "mean"
+bbm_lib <- if (bold_scaling == "mean") "~/R/library-bbm/3.0" else "~/R/library-bbm/2.0"
+.libPaths(c(bbm_lib, .libPaths()))                      # BBM from target, deps from main
+#devtools::install_github("mandymejia/BayesBrainMap", ref = "2.0", force = TRUE, lib = bbm_lib)
+library(BayesBrainMap)
+
+stopifnot(
+  "BayesBrainMap loaded from the wrong library" =
+    identical(
+      normalizePath(dirname(find.package("BayesBrainMap")), winslash = "/", mustWork = TRUE),
+      normalizePath(bbm_lib,                                winslash = "/", mustWork = TRUE)
+    )
+)
+
 
 # Load packages
 #devtools::load_all("~/Documents/GitHub/BayesBrainMap") # load mean_local normalization version.
@@ -27,6 +43,12 @@ library(purrr)           # version: 0.2.0
 library(doParallel)
 library(foreach)
 
+cat("################################\n")
+print(packageVersion("BayesBrainMap"))
+cat("################################\n")
+cat("################################\n")
+cat("################################\n")
+fit_BBM
 
 # Set CIFTI Workbench path according to the system
 if (Sys.info()["sysname"] == "Darwin") {
@@ -99,7 +121,7 @@ min_total_sec <- 600 # Minimum duration of time series after scrubbing (600 sec 
 
 # Calculation constants
 nThreads = 1 # number of threads to use to estimate priors
-Sys.setenv(OMP_NUM_THREADS = "1")
+Sys.setenv(OMP_NUM_THREADS = "24")
 
 # Parameter sweep definition for prior estimation
 encoding_sweep = c("combined") # Using only combined c("LR", "RL", "combined") 

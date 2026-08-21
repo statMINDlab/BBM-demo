@@ -205,6 +205,9 @@ estimate_and_export_prior <- function(
     } else if (nIC == 1) {
 
         GICA <- readRDS(file.path(dir_data, "templates", "MSC_parcellation.rds"))
+        
+        #valid_keys <- GICA$meta$cifti$labels[[1]]$Key
+        #inds <- valid_keys[valid_keys > 0]
 
         prior <- estimate_prior(
                 BOLD = BOLD_paths1,
@@ -214,6 +217,7 @@ estimate_and_export_prior <- function(
                 scale_sm_FWHM = scale_sm_FWHM, # Preprocessed data is assumed smoothed.
                 GSR = GSR,
                 TR = TR_HCP,
+                #inds = inds,
                 hpf = 0.01,
                 Q2 = 0,
                 Q2_max = NULL,

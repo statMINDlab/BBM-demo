@@ -1,6 +1,6 @@
 # Plots both the mean and standard deviation components for all priors
 
-prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR_local.rds")
+prior_files <- list.files(file.path(dir_data, "priors"), recursive = TRUE, full.names = TRUE, pattern = "*GSR.rds")
 
 get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
 
@@ -103,7 +103,7 @@ for (file in prior_files) {
     plot(
       prior,
       stat = "mean",
-      zlim = c(-0.2, 0.15),
+      zlim = c(-0.2, 0.2),
       fname = fname,
       idx = i,
       title = title

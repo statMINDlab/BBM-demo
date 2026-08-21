@@ -12,7 +12,7 @@ sourcedir = file.path(dir_project, "src")
 #sourcedir = "src"
 
 # Setup up dependencies and parameters
-source(file.path(sourcedir, "setup_3.0.R"))
+source(file.path(sourcedir, "setup.R"))
 
 cat(find.package("BayesBrainMap"))
 
@@ -20,8 +20,8 @@ args = commandArgs(trailingOnly = TRUE)
 nSubs = if (length(args) < 1 || args[1] == "NULL") NULL else as.integer(args[1])
 nThreads = if (length(args) < 2 || args[2] == 0) 51 else as.integer(args[2])
 
-nIC_sweep = c(2, 25)
-GSR_sweep = c(FALSE)
+nIC_sweep = c(15)
+GSR_sweep = c(FALSE, TRUE)
 encoding = "combined"
 #nThreads = 26
 smoothing = 5
