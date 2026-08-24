@@ -283,23 +283,27 @@ ggsave(file.path(avg_dir, paste0("shrinkage_vs_mean_overlay", suffix, ".png")), 
 # Calculate average within each bin 
 average_trend <- trend %>% 
   group_by(bin) %>% 
-  summarize(x = mean(x), y = mean(y))
+  summarize(x = mean(x), y = mean(y), count = n())
+
+# for the purpose of the average, get rid of bins with fewer than 5 networks contributing
+average_trend <- average_trend %>% 
+  filter(count >= 5)
 
 p_condensed <- ggplot() +
   geom_line(data=trend, aes(x, y, group = component, color = component), alpha = 0.5, linewidth = 0.75) +
   geom_line(data = average_trend, aes(x, y), linewidth = 3, color = 'black') +
   scale_color_manual(values = network_colors, guide = "none") +
   scale_fill_manual(values = network_colors, guide = "none") +
-  coord_cartesian(ylim = c(0, 0.6), xlim = c(-0.8, 0.8)) +
+  coord_cartesian(ylim = c(0, 0.6), xlim = c(-0.5, 0.8)) +
   labs(
-    x = "Average posterior mean",
-    y = "Average shrinkage",
+    x = NULL,#"Average posterior mean",
+    y = NULL,#"Average shrinkage",
     title = NULL,
     subtitle = NULL
   ) +
-  theme_minimal(base_size = 16)
+  theme_minimal(base_size = 30)
 
-ggsave(file.path(avg_dir, paste0("shrinkage_vs_mean_summary", suffix, ".png")), p_condensed,
+ggsave(file.path(avg_dir, paste0("shrinkage_vs_mean_summary_abb", suffix, ".png")), p_condensed,
        width = 11, height = 7, dpi = 300)
 
 cat("Done. Averages and plots saved to", avg_dir, "\n")
