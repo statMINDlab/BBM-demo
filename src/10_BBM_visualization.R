@@ -2,10 +2,10 @@
 
 
 # Initialize dependencies 
-sourcedir = "~/Documents/GitHub/BayesianBrainMapping-priors/src"
+sourcedir = "~/Documents/GitHub/BBM-demo/src"
 
 # Setup up dependencies and parameters
-source(file.path(sourcedir, "0_setup.R"))
+source(file.path(sourcedir, "setup.R"))
 
 get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
   
@@ -28,7 +28,7 @@ get_prior_title <- function(base_name, i, prior, encoding, gsr_status) {
 
 ################################### Set parameters to look-up RDS names. ###################################################################
 
-manuscript_output_dir <- "~/Documents/GitHub/BayesianBrainMapping-priors/manuscript"
+manuscript_output_dir <- file.path(dir_project, "manuscript")
 output_dir <- file.path(manuscript_output_dir, "outputs", "brain_map")
 # create output directory if it does not exist
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
@@ -42,7 +42,7 @@ session_id <- c("REST1", "REST2")
 
 # set parameters
 encoding <- c("LR", "RL") 
-smoothing <- 4 # in mm FWHM
+smoothing <- 5 # in mm FWHM
 scrubbing <- TRUE
 GSR = FALSE
 # Define prior path based on selected nIC
@@ -76,7 +76,7 @@ for (subid in subject_ids){
     cat("Subject: ", subid, " Session:", sesid, "\n")
     
     # Define base name for outputs
-    base_name <- paste0("sub-", subid, "ses-", sesid, "_brainmap")
+    base_name <- paste0("sub-", subid, "_ses-", sesid, "_brainmap")
     
     # Define brain map output directory for the subject
     bm_dir <- file.path(output_dir, paste0("sub-", subid, "_ses-", sesid))
@@ -96,11 +96,13 @@ for (subid in subject_ids){
     bMap = readRDS(file.path(bm_dir, paste0(base_name, ".rds")))
 
     # Calculate engagements for all networks
-    z = c(1, 2, 3)
+    u_values = c(0.01, 0.1, 0.2) # modified for mean-based scaling
     eng <- id_engagements(
       bMap,
-      z = z,
-      method_p = "bonferroni"
+      u = u_values,
+      z = NULL,
+      method_p = "bonferroni",
+      alpha = 0.01
     )
     
     # Plot brainmap and engagement for each network separately
@@ -110,7 +112,7 @@ for (subid in subject_ids){
         label_name = rownames(prior$template_parc_table)[prior$template_parc_table$Key == i]          
         
         # plot brainMap scalar maps
-        fname = file.path(dir_data, "../manuscript/plots", paste0("sub-", subid, "_ses-", sesid, "_", prior_name, "-", label_name, ".png"))
+        fname = file.path(dir_project, "/manuscript/Figure5/", paste0("posterior_sub-", subid, "_ses-", sesid, "_", prior_name, "-", label_name, ".png"))
         plot(bMap, idx = i, stat = "mean", title = "", cex.title = 1e-6, legend_embed = FALSE, fname=fname) 
     
         # Generate engagement map ############## FIGURE FOCAL ENGAGEMENT MAP ##############
