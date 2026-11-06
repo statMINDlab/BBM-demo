@@ -3,8 +3,8 @@
 Demo for Bayesian Brain Mapping (BBM) to accompany the manuscript:
 
 **Bayesian brain mapping: population-informed individualized functional topography and connectivity**  
-Nohelia Da Silva Sanchez, Diego Derman, Saige Rutherford, Damon D. Pham, Ellyn R. Butler, Mary Beth Nebel, Amanda F. Mejia  
-Preprint: https://doi.org/10.48550/arXiv.2602.01551
+Diego Derman, Nohelia Da Silva Sanchez, Saige Rutherford, Damon D. Pham, Ellyn R. Butler, Mary Beth Nebel, Amanda F. Mejia  
+Published in *Imaging Neuroscience*: [10.1162/IMAG.a.1411](https://doi.org/10.1162/IMAG.a.1411)
 
 Public data assets (priors, example posteriors):  
 https://osf.io/k6vx8/files/osfstorage
